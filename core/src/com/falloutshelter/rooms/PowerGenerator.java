@@ -9,9 +9,9 @@ package com.falloutshelter.rooms;
  *
  * @author scott
  */
-public class Diner extends Room {
+public class PowerGenerator extends Room {
 
-    public Diner(float x, float y, float width, float height) {
+    public PowerGenerator(float x, float y, float width, float height) {
         super(x, y, width, height);
     }
 

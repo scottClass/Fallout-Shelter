@@ -37,7 +37,11 @@ public abstract class Room {
         return rect.height;
     }
     
-    public abstract void collectResource();
+    public int getLevel() {
+        return level;
+    }
+    
+    public abstract int collectResource();
     
     public void levelUp() {
         if(level < 3) {
