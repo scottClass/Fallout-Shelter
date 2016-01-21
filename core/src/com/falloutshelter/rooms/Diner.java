@@ -17,6 +17,7 @@ public class Diner extends Room {
 
     @Override
     public int collectResource() {
+        //for now
         return 10;
     }
     
