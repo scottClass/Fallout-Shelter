@@ -5,6 +5,8 @@
  */
 package com.falloutshelter.rooms;
 
+import com.falloutshelter.superclasses.Room;
+
 /**
  *
  * @author scott
@@ -17,8 +19,8 @@ public class WaterPurification extends Room {
 
     @Override
     public int collectResource() {
-        //for now
-        return 10;
+        return (2*super.getSize()*(super.getLevel()+4))-2;
     }
+
     
 }

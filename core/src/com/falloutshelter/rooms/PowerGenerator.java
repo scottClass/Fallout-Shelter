@@ -5,6 +5,8 @@
  */
 package com.falloutshelter.rooms;
 
+import com.falloutshelter.superclasses.Room;
+
 /**
  *
  * @author scott
@@ -17,8 +19,7 @@ public class PowerGenerator extends Room {
 
     @Override
     public int collectResource() {
-        //for now
-        return 10;
+        return 2 ^ (super.getSize() - 1) * 10 + 2 * (super.getSize() - 1) + super.getLevel();
     }
-    
+
 }

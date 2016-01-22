@@ -12,8 +12,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
+import com.falloutshelter.characters.Dweller;
 import com.falloutshelter.rooms.Diner;
-import com.falloutshelter.rooms.Room;
+import com.falloutshelter.superclasses.Room;
 
 /**
  *
@@ -45,7 +46,7 @@ public class WorldRenderer implements Screen {
         font = new BitmapFont();
         batch = new SpriteBatch();
         font.setColor(Color.GREEN);
-    }
+        }
 
     @Override
     public void render(float delta) {
