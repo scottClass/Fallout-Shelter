@@ -13,51 +13,160 @@ import java.util.Random;
  * @author scott
  */
 public class Dweller extends Entity {
-    
+
     //The traits that make this dweller special
     private int[] specialArray;
-    private String name;
     private boolean isFemale;
-    
+    private String firstName;
+    private String lastName;
+
     public Dweller(float x, float y, float width, float height) {
         super(x, y, width, height);
         specialArray = new int[7];
-        for(int i = 0; i < specialArray.length; i++) {
-            specialArray[i] = randomInt();
+        for (int i = 0; i < specialArray.length; i++) {
+            specialArray[i] = randomInt(1, 4);
         }
+        int n = randomInt(1, 2);
+
+        if (n == 1) {
+            isFemale = false;
+        } else {
+            isFemale = true;
+        }
+        firstName = randomFirstName();
+        lastName = randomLastName();
     }
-    
+
     public int[] getSpecialTraits() {
         return specialArray;
     }
 
+    public String getGender() {
+        if (isFemale) {
+            return "Female";
+        } else {
+            return "Male";
+        }
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
     /**
-     * Determines the SPECIAL traits a dweller will start off with
+     * Generates a random number.
      *
      * @return the random number
      */
-    private static int randomInt() {
+    private int randomInt(int min, int max) {
         Random rand = new Random();
 
-        int n = rand.nextInt(4) + 1;
+        int n = rand.nextInt(min) + max;
         return n;
     }
-    
+
+    /**
+     * Generates a random number and uses that number to pick a name.
+     *
+     * @return a random first name.
+     */
     private String randomFirstName() {
         Random rand = new Random();
 
         int n = rand.nextInt(10) + 1;
+        if (!isFemale) {
+            switch (n) {
+                case 1:
+                    return "Jordan";
+                case 2:
+                    return "Tom";
+                case 3:
+                    return "Scott";
+                case 4:
+                    return "Eric";
+                case 5:
+                    return "Ted";
+                case 6:
+                    return "Johnny";
+                case 7:
+                    return "Alex";
+                case 8:
+                    return "Tyrell";
+                case 9:
+                    return "Dmitry";
+                case 10:
+                    return "Yuri";
+            }
+        } else {
+            switch (n) {
+                case 1:
+                    return "Rhiannon";
+                case 2:
+                    return "Nicole";
+                case 3:
+                    return "Rebecca";
+                case 4:
+                    return "Clare";
+                case 5:
+                    return "Chelsey";
+                case 6:
+                    return "Kelly";
+                case 7:
+                    return "Raven";
+                case 8:
+                    return "Hitomi";
+                case 9:
+                    return "Alex";
+                case 10:
+                    return "Anne";
+            }
+        }
+        //if method makes it to here something fucked up
+        System.out.println("Something went wrong");
         return null;
     }
-    
+
+    /**
+     * Generates a random number and uses that number to pick a name.
+     *
+     * @return a random last name.
+     */
     private String randomLastName() {
         Random rand = new Random();
 
         int n = rand.nextInt(10) + 1;
-        switch(n) {
-            case 1: return "Blake";
-            case 2: return "Tom";
+        switch (n) {
+            case 1:
+                return "Meilke";
+            case 2:
+                return "Jones";
+            case 3:
+                return "Johnstone";
+            case 4:
+                return "Smith";
+            case 5:
+                return "Brown";
+            case 6:
+                return "Reid";
+            case 7:
+                return "Williams";
+            case 8:
+                return "Taylor";
+            case 9:
+                return "Davis";
+            case 10:
+                return "Lee";
         }
+        //if method makes it to here something fucked up
+        System.out.println("Something went wrong");
         return null;
     }
 }
