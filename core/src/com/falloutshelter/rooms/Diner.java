@@ -18,7 +18,32 @@ public class Diner extends Room {
     @Override
     public int collectResource() {
         //for now
-        return 10;
+        if (super.getConnections() == 1) {
+            if (super.getLevel() == 1) {
+                return 8;
+            } else if (super.getLevel() == 2) {
+                return 10;
+            } else {
+                return 12;
+            }
+        } else if (super.getConnections() == 2) {
+            if(super.getLevel() == 1) {
+                
+            } else if (super.getLevel() == 2) {
+                return 22;
+            } else {
+                return 26;
+            }
+        } else if (super.getConnections() == 3) {
+            if(super.getLevel() == 1) {
+                
+            } else if (super.getLevel() == 2) {
+                
+            } else {
+                return 40;
+            }
+        } 
+        return 0;
     }
-    
+
 }

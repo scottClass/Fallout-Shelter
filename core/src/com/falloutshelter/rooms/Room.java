@@ -16,10 +16,12 @@ public abstract class Room {
 
     private Rectangle rect;
     private int level;
+    private int connected;
 
     public Room(float x, float y, float width, float height) {
         rect = new Rectangle(x, y, width, height);
         level = 1;
+        connected = 1;
     }
 
     public float getX() {
@@ -40,6 +42,10 @@ public abstract class Room {
 
     public int getLevel() {
         return level;
+    }
+    
+    public int getConnections() {
+        return connected;
     }
 
     public abstract int collectResource();

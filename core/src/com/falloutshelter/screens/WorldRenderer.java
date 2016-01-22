@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
+import com.falloutshelter.rooms.Diner;
 import com.falloutshelter.rooms.Room;
 
 /**
@@ -27,6 +28,7 @@ public class WorldRenderer implements Screen {
     private float energy, maxEnergy;
     private float food, maxFood;
     private float water, maxWater;
+    private int dwellers, maxDwellers;
     
     private BitmapFont font;
     private SpriteBatch batch;
