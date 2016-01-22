@@ -5,6 +5,7 @@
  */
 package com.falloutshelter.game;
 
+import com.falloutshelter.screens.WorldRenderer;
 import com.badlogic.gdx.Screen;
 
 /**
@@ -14,10 +15,6 @@ import com.badlogic.gdx.Screen;
 public class MainGame implements Screen {
 
     WorldRenderer renderer;
-    
-    private float energy;
-    private float food;
-    private float water;
     
     public MainGame() {
         renderer = new WorldRenderer();
