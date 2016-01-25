@@ -29,12 +29,16 @@ public class WorldRenderer implements Screen {
     private float energy, maxEnergy;
     private float food, maxFood;
     private float water, maxWater;
-    private int dwellers, maxDwellers;
+    private int Numdwellers, maxDwellers;
     
     private BitmapFont font;
     private SpriteBatch batch;
     
+    private Array<Dweller> dwellers;
+    
     public WorldRenderer() {
+        dwellers = new Array<Dweller>();
+        dwellers.add(new Dweller(1, 1, 1, 1));
         rooms = new Array<Room>();
         startTime = System.currentTimeMillis();
         energy = 50;
@@ -46,6 +50,7 @@ public class WorldRenderer implements Screen {
         font = new BitmapFont();
         batch = new SpriteBatch();
         font.setColor(Color.GREEN);
+        System.out.println(dwellers.get(0));
         }
 
     @Override

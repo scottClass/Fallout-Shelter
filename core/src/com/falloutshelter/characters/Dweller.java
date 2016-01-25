@@ -43,9 +43,9 @@ public class Dweller extends Entity {
 
     public String getGender() {
         if (isFemale) {
-            return "Female";
+            return "female";
         } else {
-            return "Male";
+            return "male";
         }
     }
 
@@ -69,7 +69,7 @@ public class Dweller extends Entity {
     private int randomInt(int min, int max) {
         Random rand = new Random();
 
-        int n = rand.nextInt(min) + max;
+        int n = rand.nextInt(max) + min;
         return n;
     }
 
@@ -163,10 +163,17 @@ public class Dweller extends Entity {
             case 9:
                 return "Davis";
             case 10:
-                return "Lee";
+                return "Love";
         }
         //if method makes it to here something fucked up
         System.out.println("Something went wrong");
         return null;
+    }
+    
+    @Override
+    public String toString() {
+        return firstName + " " + lastName + "\nS: " + specialArray[0] + "\nP: " + specialArray[1] + 
+                "\nE: " + specialArray[2] + "\nC: " + specialArray[3] + "\nI: " + specialArray[4] + 
+                "\nA: " + specialArray[5] + "\nL: " + specialArray[6]; 
     }
 }
