@@ -14,10 +14,13 @@ import java.util.Random;
  */
 public abstract class Entity {
     
-    Rectangle rect;
+    private Rectangle rect;
+    private int health, maxHealth;
     
     public Entity(float x, float y, float width, float height) {
         rect = new Rectangle(x, y, width, height);
+        maxHealth = 20;
+        health = maxHealth;
     }
     
     public float getX() {
@@ -34,6 +37,19 @@ public abstract class Entity {
     
     public float getHeight() {
         return rect.height;
+    }
+    
+    public int getHealth() {
+        return health;
+    }
+    
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+    
+    public void Levelup() {
+        maxHealth += 5;
+        health = maxHealth;
     }
     
     

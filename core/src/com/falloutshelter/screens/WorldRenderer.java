@@ -6,6 +6,8 @@
 package com.falloutshelter.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -15,27 +17,27 @@ import com.badlogic.gdx.utils.Array;
 import com.falloutshelter.characters.Dweller;
 import com.falloutshelter.rooms.Diner;
 import com.falloutshelter.superclasses.Room;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
 /**
  *
  * @author scott
  */
 public class WorldRenderer implements Screen {
-    
+
     Array<Room> rooms;
     long startTime;
     long secondsPassed;
-    
     private float energy, maxEnergy;
     private float food, maxFood;
     private float water, maxWater;
     private int numDwellers, maxDwellers;
-    
     private BitmapFont font;
     private SpriteBatch batch;
-    
     private Array<Dweller> dwellers;
-    
+
     public WorldRenderer() {
         dwellers = new Array<Dweller>();
         dwellers.add(new Dweller(1, 1, 1, 1));
@@ -51,19 +53,22 @@ public class WorldRenderer implements Screen {
         batch = new SpriteBatch();
         font.setColor(Color.GREEN);
         System.out.println(dwellers.get(0));
-        }
+    }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         secondsPassed = (System.currentTimeMillis() - startTime) / 1000;
-        
+        if(Gdx.input.isKeyJustPressed(Keys.S)) {
+            save();
+        }
+
         batch.begin();
         font.draw(batch, secondsPassed + "", 10, 20);
         batch.end();
     }
-    
+
     @Override
     public void show() {
     }
@@ -87,5 +92,34 @@ public class WorldRenderer implements Screen {
     @Override
     public void dispose() {
     }
-    
+
+    public void load() {
+    }
+
+    public void save() {
+        
+
+        try {  // Catch errors in I/O if necessary.
+// Open a file to write to, named SavedObj.sav.
+            FileOutputStream saveFile = new FileOutputStream("SaveGame.sav");
+
+// Create an ObjectOutputStream to put objects into save file.
+            ObjectOutputStream save = new ObjectOutputStream(saveFile);
+
+// Now we do the save.
+//            save.writeObject(powerSwitch);
+            save.writeObject(energy);
+            save.writeObject(food);
+            save.writeObject(water);
+            save.writeObject(maxEnergy);
+            save.writeObject(maxFood);
+            save.writeObject(maxWater);
+
+// Close the file.
+            save.close(); // This also closes saveFile.
+        } catch (Exception exc) {
+            exc.printStackTrace(); // If there was an error, print the info.
+        }
+
+    }
 }
