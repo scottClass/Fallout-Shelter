@@ -99,7 +99,7 @@ public class Dweller extends Entity {
                 case 7:
                     return "Alex";
                 case 8:
-                    return "Tyrell";
+                    return "Tim";
                 case 9:
                     return "Dmitry";
                 case 10:
