@@ -29,7 +29,7 @@ public class WorldRenderer implements Screen {
     private float energy, maxEnergy;
     private float food, maxFood;
     private float water, maxWater;
-    private int Numdwellers, maxDwellers;
+    private int numDwellers, maxDwellers;
     
     private BitmapFont font;
     private SpriteBatch batch;
