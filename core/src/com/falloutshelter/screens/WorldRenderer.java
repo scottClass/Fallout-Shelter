@@ -33,23 +33,26 @@ import java.util.logging.Logger;
  */
 public class WorldRenderer implements Screen {
 
-    Array<Room> rooms;
-    long startTime;
-    long secondsPassed;
-    long nextSave;
+    private Array<Room> rooms;
+    private long startTime;
+    private long secondsPassed;
+    private long nextSave;
     private int energy, maxEnergy;
     private int food, maxFood;
     private int water, maxWater;
     private int numDwellers, maxDwellers;
+    private int caps;
     private BitmapFont font;
     private SpriteBatch batch;
     private Array<Dweller> dwellers;
-    int count;
+    
+
     public WorldRenderer() {
-        load();
+        Load();
         System.out.println();
         dwellers = new Array<Dweller>();
         dwellers.add(new Dweller(1, 1, 1, 1));
+        numDwellers++;
         rooms = new Array<Room>();
         startTime = System.currentTimeMillis();
         energy = 50;
@@ -58,12 +61,13 @@ public class WorldRenderer implements Screen {
         maxEnergy = 100;
         maxFood = 100;
         maxWater = 100;
+        caps = 500;
+        maxDwellers = 20;
         font = new BitmapFont();
         batch = new SpriteBatch();
         font.setColor(Color.GREEN);
-        System.out.println(dwellers.get(0));
         secondsPassed = 0;
-        nextSave = secondsPassed + 20;
+        nextSave = secondsPassed + 10;
     }
 
     @Override
@@ -72,7 +76,7 @@ public class WorldRenderer implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         secondsPassed = (System.currentTimeMillis() - startTime) / 1000;
         if (Gdx.input.isKeyJustPressed(Keys.L)) {
-            load();
+            Load();
         } else if (Gdx.input.isKeyJustPressed(Keys.C)) {
             try {
                 clearSave();
@@ -82,9 +86,9 @@ public class WorldRenderer implements Screen {
         }
         
         if(nextSave == secondsPassed) {
-            save();
+            Save();
             System.out.println("Saved");
-            nextSave = secondsPassed + 20;
+            nextSave = secondsPassed + 10;
         }
 
         batch.begin();
@@ -116,18 +120,14 @@ public class WorldRenderer implements Screen {
     public void dispose() {
     }
 
-    private void load() {
+    private void Load() {
         try {
-// Open file to read from, named SavedObj.sav.
+            // Open file to read from, named SavedObj.sav.
             FileInputStream saveFile = new FileInputStream("SaveGame.sav");
 
-// Create an ObjectInputStream to get objects from save file.
+            // Create an ObjectInputStream to get objects from save file.
             ObjectInputStream save = new ObjectInputStream(saveFile);
-
-// Now we do the restore.
-// readObject() returns a generic Object, we cast those back
-// into their original class type.
-// For primitive types, use the corresponding reference class.
+            
             energy = (Integer) save.readObject();
             System.out.println(energy);
             food = (Integer) save.readObject();
@@ -140,14 +140,19 @@ public class WorldRenderer implements Screen {
             System.out.println(maxFood);
             maxWater = (Integer) save.readObject();
             System.out.println(maxWater);
-// Close the file.
-            save.close(); // This also closes saveFile.
+            caps = (Integer) save.readObject();
+            System.out.println(caps);
+            maxDwellers = (Integer) save.readObject();
+            System.out.println(maxDwellers);
+            dwellers = (Array<Dweller>) save.readObject();
+            //Clost the save file
+            save.close(); 
         } catch (Exception exc) {
             exc.printStackTrace(); // If there was an error, print the info.
         }
     }
 
-    private void save() {
+    private void Save() {
 
         try { 
             // Open a file to write to, named SavedObj.sav.
@@ -162,6 +167,9 @@ public class WorldRenderer implements Screen {
             save.writeObject(maxEnergy);
             save.writeObject(maxFood);
             save.writeObject(maxWater);
+            save.writeObject(caps);
+            save.writeObject(maxDwellers);
+            save.writeObject(dwellers);
 
             // Close the file.
             save.close(); 
