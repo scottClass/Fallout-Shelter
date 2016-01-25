@@ -17,9 +17,15 @@ import com.badlogic.gdx.utils.Array;
 import com.falloutshelter.characters.Dweller;
 import com.falloutshelter.rooms.Diner;
 import com.falloutshelter.superclasses.Room;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -30,15 +36,18 @@ public class WorldRenderer implements Screen {
     Array<Room> rooms;
     long startTime;
     long secondsPassed;
-    private float energy, maxEnergy;
-    private float food, maxFood;
-    private float water, maxWater;
+    long nextSave;
+    private int energy, maxEnergy;
+    private int food, maxFood;
+    private int water, maxWater;
     private int numDwellers, maxDwellers;
     private BitmapFont font;
     private SpriteBatch batch;
     private Array<Dweller> dwellers;
-
+    int count;
     public WorldRenderer() {
+        load();
+        System.out.println();
         dwellers = new Array<Dweller>();
         dwellers.add(new Dweller(1, 1, 1, 1));
         rooms = new Array<Room>();
@@ -53,6 +62,8 @@ public class WorldRenderer implements Screen {
         batch = new SpriteBatch();
         font.setColor(Color.GREEN);
         System.out.println(dwellers.get(0));
+        secondsPassed = 0;
+        nextSave = secondsPassed + 20;
     }
 
     @Override
@@ -60,8 +71,20 @@ public class WorldRenderer implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         secondsPassed = (System.currentTimeMillis() - startTime) / 1000;
-        if(Gdx.input.isKeyJustPressed(Keys.S)) {
+        if (Gdx.input.isKeyJustPressed(Keys.L)) {
+            load();
+        } else if (Gdx.input.isKeyJustPressed(Keys.C)) {
+            try {
+                clearSave();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        if(nextSave == secondsPassed) {
             save();
+            System.out.println("Saved");
+            nextSave = secondsPassed + 20;
         }
 
         batch.begin();
@@ -93,21 +116,46 @@ public class WorldRenderer implements Screen {
     public void dispose() {
     }
 
-    public void load() {
+    private void load() {
+        try {
+// Open file to read from, named SavedObj.sav.
+            FileInputStream saveFile = new FileInputStream("SaveGame.sav");
+
+// Create an ObjectInputStream to get objects from save file.
+            ObjectInputStream save = new ObjectInputStream(saveFile);
+
+// Now we do the restore.
+// readObject() returns a generic Object, we cast those back
+// into their original class type.
+// For primitive types, use the corresponding reference class.
+            energy = (Integer) save.readObject();
+            System.out.println(energy);
+            food = (Integer) save.readObject();
+            System.out.println(food);
+            water = (Integer) save.readObject();
+            System.out.println(water);
+            maxEnergy = (Integer) save.readObject();
+            System.out.println(maxEnergy);
+            maxFood = (Integer) save.readObject();
+            System.out.println(maxFood);
+            maxWater = (Integer) save.readObject();
+            System.out.println(maxWater);
+// Close the file.
+            save.close(); // This also closes saveFile.
+        } catch (Exception exc) {
+            exc.printStackTrace(); // If there was an error, print the info.
+        }
     }
 
-    public void save() {
-        
+    private void save() {
 
-        try {  // Catch errors in I/O if necessary.
-// Open a file to write to, named SavedObj.sav.
+        try { 
+            // Open a file to write to, named SavedObj.sav.
             FileOutputStream saveFile = new FileOutputStream("SaveGame.sav");
-
-// Create an ObjectOutputStream to put objects into save file.
+            // Create an ObjectOutputStream to put objects into save file.
             ObjectOutputStream save = new ObjectOutputStream(saveFile);
 
-// Now we do the save.
-//            save.writeObject(powerSwitch);
+            // Now we do the save.
             save.writeObject(energy);
             save.writeObject(food);
             save.writeObject(water);
@@ -115,11 +163,19 @@ public class WorldRenderer implements Screen {
             save.writeObject(maxFood);
             save.writeObject(maxWater);
 
-// Close the file.
-            save.close(); // This also closes saveFile.
+            // Close the file.
+            save.close(); 
+            // This also closes saveFile.
         } catch (Exception exc) {
-            exc.printStackTrace(); // If there was an error, print the info.
+            exc.printStackTrace(); 
+            // If there was an error, print the info.
         }
 
+    }
+    
+    private void clearSave() throws FileNotFoundException, IOException {
+        FileOutputStream saveFile = new FileOutputStream("SaveGame.sav");
+        saveFile.close();
+        System.out.println("Cleared");
     }
 }
