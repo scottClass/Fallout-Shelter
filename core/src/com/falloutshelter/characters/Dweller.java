@@ -19,6 +19,8 @@ public class Dweller extends Entity {
     private boolean isFemale;
     private String firstName;
     private String lastName;
+    private int happiness;
+    
 
     public Dweller(float x, float y, float width, float height) {
         super(x, y, width, height);
@@ -35,6 +37,14 @@ public class Dweller extends Entity {
         }
         firstName = randomFirstName();
         lastName = randomLastName();
+    }
+    
+    public void addHappiness(int toAdd) {
+        if (happiness + toAdd <= 100) {
+            happiness += toAdd;
+        } else {
+            happiness = 100;
+        }
     }
 
     public int[] getSpecialTraits() {

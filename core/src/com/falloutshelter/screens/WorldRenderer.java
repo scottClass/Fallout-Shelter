@@ -144,7 +144,7 @@ public class WorldRenderer implements Screen {
             System.out.println(caps);
             maxDwellers = (Integer) save.readObject();
             System.out.println(maxDwellers);
-            dwellers = (Array<Dweller>) save.readObject();
+            //dwellers = (Array<Dweller>) save.readObject();
             //Clost the save file
             save.close(); 
         } catch (Exception exc) {
@@ -169,7 +169,7 @@ public class WorldRenderer implements Screen {
             save.writeObject(maxWater);
             save.writeObject(caps);
             save.writeObject(maxDwellers);
-            save.writeObject(dwellers);
+            //save.writeObject(dwellers);
 
             // Close the file.
             save.close(); 
