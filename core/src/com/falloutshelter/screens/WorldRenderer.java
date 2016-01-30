@@ -51,8 +51,6 @@ public class WorldRenderer implements Screen {
         Load();
         System.out.println();
         dwellers = new Array<Dweller>();
-        dwellers.add(new Dweller(1, 1, 1, 1));
-        numDwellers++;
         rooms = new Array<Room>();
         startTime = System.currentTimeMillis();
         energy = 50;
@@ -83,6 +81,10 @@ public class WorldRenderer implements Screen {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        } else if (Gdx.input.isKeyJustPressed(Keys.R)) {
+            dwellers.add(new Dweller (1, 1, 1, 1));
+            System.out.println(dwellers.get(numDwellers));
+            numDwellers++;
         }
         
         if(nextSave == secondsPassed) {
@@ -144,7 +146,7 @@ public class WorldRenderer implements Screen {
             System.out.println(caps);
             maxDwellers = (Integer) save.readObject();
             System.out.println(maxDwellers);
-            //dwellers = (Array<Dweller>) save.readObject();
+            dwellers = (Array) save.readObject();
             //Clost the save file
             save.close(); 
         } catch (Exception exc) {
@@ -169,7 +171,7 @@ public class WorldRenderer implements Screen {
             save.writeObject(maxWater);
             save.writeObject(caps);
             save.writeObject(maxDwellers);
-            //save.writeObject(dwellers);
+            save.writeObject(dwellers);
 
             // Close the file.
             save.close(); 
