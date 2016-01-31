@@ -60,7 +60,7 @@ public class WorldRenderer implements Screen {
         font.setColor(Color.GREEN);
         secondsPassed = 0;
         nextSave = secondsPassed + 10;
-        Load();
+        //Load();
     }
 
     @Override
@@ -69,7 +69,7 @@ public class WorldRenderer implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         secondsPassed = (System.currentTimeMillis() - startTime) / 1000;
         if (Gdx.input.isKeyJustPressed(Keys.L)) {
-            Load();
+            //Load();
         } else if (Gdx.input.isKeyJustPressed(Keys.C)) {
             try {
                 clearSave();
@@ -78,12 +78,16 @@ public class WorldRenderer implements Screen {
             }
         } else if (Gdx.input.isKeyJustPressed(Keys.R)) {
             dwellers.add(new Dweller(1, 1, 1, 1));
-            numDwellers++;
             System.out.println(dwellers.get(numDwellers));
+            numDwellers++;
+        } else if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
+            for (Dweller d : dwellers) {
+                System.out.println(d);
+            }
         }
 
-        if(nextSave == secondsPassed) {
-            Save();
+        if (nextSave == secondsPassed) {
+            //Save();
             System.out.println("Saved");
             nextSave = secondsPassed + 10;
         }

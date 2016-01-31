@@ -6,6 +6,7 @@
 package com.falloutshelter.characters;
 
 import com.falloutshelter.superclasses.Entity;
+import com.falloutshelter.superclasses.Room;
 import java.util.Random;
 
 /**
@@ -19,6 +20,7 @@ public class Dweller extends Entity {
     private boolean isFemale;
     private String firstName;
     private String lastName;
+    private Room assignedRoom;
     private int happiness;
     
 
@@ -37,6 +39,7 @@ public class Dweller extends Entity {
         }
         firstName = randomFirstName();
         lastName = randomLastName();
+        assignedRoom = null;
     }
     
     public void addHappiness(int toAdd) {
@@ -45,6 +48,14 @@ public class Dweller extends Entity {
         } else {
             happiness = 100;
         }
+    }
+    
+    public Room getAssignedRoom() {
+        return assignedRoom;
+    }
+    
+    public void changeAssignedRoom(Room newRoom) {
+        assignedRoom = newRoom;
     }
 
     public int[] getSpecialTraits() {
@@ -184,6 +195,6 @@ public class Dweller extends Entity {
     public String toString() {
         return firstName + " " + lastName + "\nS: " + specialArray[0] + "\nP: " + specialArray[1] + 
                 "\nE: " + specialArray[2] + "\nC: " + specialArray[3] + "\nI: " + specialArray[4] + 
-                "\nA: " + specialArray[5] + "\nL: " + specialArray[6]; 
+                "\nA: " + specialArray[5] + "\nL: " + specialArray[6] + "\n"; 
     }
 }
