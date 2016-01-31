@@ -6,7 +6,6 @@
 package com.falloutshelter.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -15,7 +14,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.falloutshelter.characters.Dweller;
-import com.falloutshelter.rooms.Diner;
 import com.falloutshelter.superclasses.Room;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -23,9 +21,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -45,14 +40,11 @@ public class WorldRenderer implements Screen {
     private BitmapFont font;
     private SpriteBatch batch;
     private Array<Dweller> dwellers;
-    
 
     public WorldRenderer() {
-        Load();
+        numDwellers = 0;
         System.out.println();
         dwellers = new Array<Dweller>();
-        dwellers.add(new Dweller(1, 1, 1, 1));
-        numDwellers++;
         rooms = new Array<Room>();
         startTime = System.currentTimeMillis();
         energy = 50;
@@ -68,6 +60,7 @@ public class WorldRenderer implements Screen {
         font.setColor(Color.GREEN);
         secondsPassed = 0;
         nextSave = secondsPassed + 10;
+        Load();
     }
 
     @Override
@@ -83,8 +76,12 @@ public class WorldRenderer implements Screen {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        } else if (Gdx.input.isKeyJustPressed(Keys.R)) {
+            dwellers.add(new Dweller(1, 1, 1, 1));
+            numDwellers++;
+            System.out.println(dwellers.get(numDwellers));
         }
-        
+
         if(nextSave == secondsPassed) {
             Save();
             System.out.println("Saved");
@@ -127,7 +124,7 @@ public class WorldRenderer implements Screen {
 
             // Create an ObjectInputStream to get objects from save file.
             ObjectInputStream save = new ObjectInputStream(saveFile);
-            
+
             energy = (Integer) save.readObject();
             System.out.println(energy);
             food = (Integer) save.readObject();
@@ -146,7 +143,7 @@ public class WorldRenderer implements Screen {
             System.out.println(maxDwellers);
             dwellers = (Array<Dweller>) save.readObject();
             //Clost the save file
-            save.close(); 
+            save.close();
         } catch (Exception exc) {
             exc.printStackTrace(); // If there was an error, print the info.
         }
@@ -154,7 +151,7 @@ public class WorldRenderer implements Screen {
 
     private void Save() {
 
-        try { 
+        try {
             // Open a file to write to, named SavedObj.sav.
             FileOutputStream saveFile = new FileOutputStream("SaveGame.sav");
             // Create an ObjectOutputStream to put objects into save file.
@@ -172,15 +169,15 @@ public class WorldRenderer implements Screen {
             save.writeObject(dwellers);
 
             // Close the file.
-            save.close(); 
+            save.close();
             // This also closes saveFile.
         } catch (Exception exc) {
-            exc.printStackTrace(); 
+            exc.printStackTrace();
             // If there was an error, print the info.
         }
 
     }
-    
+
     private void clearSave() throws FileNotFoundException, IOException {
         FileOutputStream saveFile = new FileOutputStream("SaveGame.sav");
         saveFile.close();
