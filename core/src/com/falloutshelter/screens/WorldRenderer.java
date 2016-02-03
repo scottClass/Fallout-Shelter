@@ -23,6 +23,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,7 +32,7 @@ import java.util.logging.Logger;
  *
  * @author scott
  */
-public class WorldRenderer implements Screen {
+public class WorldRenderer implements Screen, Serializable {
 
     private Array<Room> rooms;
     private long startTime;
@@ -45,7 +46,6 @@ public class WorldRenderer implements Screen {
     private BitmapFont font;
     private SpriteBatch batch;
     private Array<Dweller> dwellers;
-    
 
     public WorldRenderer() {
         Load();
@@ -82,12 +82,12 @@ public class WorldRenderer implements Screen {
                 e.printStackTrace();
             }
         } else if (Gdx.input.isKeyJustPressed(Keys.R)) {
-            dwellers.add(new Dweller (1, 1, 1, 1));
+            dwellers.add(new Dweller(1, 1, 1, 1));
             System.out.println(dwellers.get(numDwellers));
             numDwellers++;
         }
-        
-        if(nextSave == secondsPassed) {
+
+        if (nextSave == secondsPassed) {
             Save();
             System.out.println("Saved");
             nextSave = secondsPassed + 10;
@@ -129,7 +129,7 @@ public class WorldRenderer implements Screen {
 
             // Create an ObjectInputStream to get objects from save file.
             ObjectInputStream save = new ObjectInputStream(saveFile);
-            
+
             energy = (Integer) save.readObject();
             System.out.println(energy);
             food = (Integer) save.readObject();
@@ -146,9 +146,9 @@ public class WorldRenderer implements Screen {
             System.out.println(caps);
             maxDwellers = (Integer) save.readObject();
             System.out.println(maxDwellers);
-            dwellers = (Array) save.readObject();
+            dwellers = (Array<Dweller>) save.readObject();
             //Clost the save file
-            save.close(); 
+            save.close();
         } catch (Exception exc) {
             exc.printStackTrace(); // If there was an error, print the info.
         }
@@ -156,7 +156,7 @@ public class WorldRenderer implements Screen {
 
     private void Save() {
 
-        try { 
+        try {
             // Open a file to write to, named SavedObj.sav.
             FileOutputStream saveFile = new FileOutputStream("SaveGame.sav");
             // Create an ObjectOutputStream to put objects into save file.
@@ -174,15 +174,15 @@ public class WorldRenderer implements Screen {
             save.writeObject(dwellers);
 
             // Close the file.
-            save.close(); 
+            save.close();
             // This also closes saveFile.
         } catch (Exception exc) {
-            exc.printStackTrace(); 
+            exc.printStackTrace();
             // If there was an error, print the info.
         }
 
     }
-    
+
     private void clearSave() throws FileNotFoundException, IOException {
         FileOutputStream saveFile = new FileOutputStream("SaveGame.sav");
         saveFile.close();
