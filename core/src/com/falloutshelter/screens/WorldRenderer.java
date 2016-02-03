@@ -26,7 +26,7 @@ import java.io.ObjectOutputStream;
  *
  * @author scott
  */
-public class WorldRenderer implements Screen, Serializable {
+public class WorldRenderer implements Screen {
 
     private Array<Room> rooms;
     private long startTime;
