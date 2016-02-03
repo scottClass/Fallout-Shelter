@@ -6,7 +6,6 @@
 package com.falloutshelter.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -15,7 +14,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.falloutshelter.characters.Dweller;
-import com.falloutshelter.rooms.Diner;
 import com.falloutshelter.superclasses.Room;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -23,10 +21,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -48,7 +42,7 @@ public class WorldRenderer implements Screen, Serializable {
     private Array<Dweller> dwellers;
 
     public WorldRenderer() {
-        Load();
+        numDwellers = 0;
         System.out.println();
         dwellers = new Array<Dweller>();
         rooms = new Array<Room>();
@@ -66,6 +60,7 @@ public class WorldRenderer implements Screen, Serializable {
         font.setColor(Color.GREEN);
         secondsPassed = 0;
         nextSave = secondsPassed + 10;
+        //Load();
     }
 
     @Override
@@ -74,7 +69,7 @@ public class WorldRenderer implements Screen, Serializable {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         secondsPassed = (System.currentTimeMillis() - startTime) / 1000;
         if (Gdx.input.isKeyJustPressed(Keys.L)) {
-            Load();
+            //Load();
         } else if (Gdx.input.isKeyJustPressed(Keys.C)) {
             try {
                 clearSave();
@@ -85,10 +80,14 @@ public class WorldRenderer implements Screen, Serializable {
             dwellers.add(new Dweller(1, 1, 1, 1));
             System.out.println(dwellers.get(numDwellers));
             numDwellers++;
+        } else if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
+            for (Dweller d : dwellers) {
+                System.out.println(d);
+            }
         }
 
         if (nextSave == secondsPassed) {
-            Save();
+            //Save();
             System.out.println("Saved");
             nextSave = secondsPassed + 10;
         }
