@@ -14,7 +14,7 @@ import com.falloutshelter.superclasses.Room;
 public class WaterPurification extends Room {
 
     public WaterPurification(float x, float y, float width, float height) {
-        super(x, y, width, height);
+        super(x, y, width, height, "perception");
     }
 
     @Override

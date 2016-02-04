@@ -88,7 +88,7 @@ public class WorldRenderer implements Screen {
 
         if (nextSave == secondsPassed) {
             //Save();
-            System.out.println("Saved");
+            //System.out.println("Saved");
             nextSave = secondsPassed + 10;
         }
 
@@ -146,6 +146,7 @@ public class WorldRenderer implements Screen {
             maxDwellers = (Integer) save.readObject();
             System.out.println(maxDwellers);
             dwellers = (Array<Dweller>) save.readObject();
+            rooms = (Array<Room>) save.readObject();
             //Clost the save file
             save.close();
         } catch (Exception exc) {
@@ -171,6 +172,7 @@ public class WorldRenderer implements Screen {
             save.writeObject(caps);
             save.writeObject(maxDwellers);
             save.writeObject(dwellers);
+            save.writeObject(rooms);
 
             // Close the file.
             save.close();

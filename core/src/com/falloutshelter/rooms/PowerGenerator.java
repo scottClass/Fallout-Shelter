@@ -14,7 +14,7 @@ import com.falloutshelter.superclasses.Room;
 public class PowerGenerator extends Room {
 
     public PowerGenerator(float x, float y, float width, float height) {
-        super(x, y, width, height);
+        super(x, y, width, height, "strength");
     }
 
     @Override

@@ -11,16 +11,15 @@ import com.falloutshelter.superclasses.Room;
  *
  * @author scott
  */
-public class Diner extends Room {
-
-    public Diner(float x, float y, float width, float height) {
-        super(x, y, width, height, "agility");
-        super.setMaxCapacity(25*super.getSize()*(super.getLevel()+1));
+public class LivingQuarters extends Room {
+    
+    public LivingQuarters(float x, float y, float width, float height) {
+        super(x, y, width, height, "charisma");
     }
 
     @Override
     public int collectResource() {
-        return (2 * super.getSize() * (super.getLevel() + 4)) - 2;
+        return 0;
     }
-
+    
 }

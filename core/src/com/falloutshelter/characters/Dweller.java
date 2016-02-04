@@ -81,6 +81,34 @@ public class Dweller extends Entity {
     public String getFullName() {
         return firstName + " " + lastName;
     }
+    
+    public int getStrength() {
+        return specialArray[0];
+    }
+    
+    public int getPerception() {
+        return specialArray[1];
+    }
+    
+    public int getEndurance() {
+        return specialArray[2];
+    }
+    
+    public int getCharisma() {
+        return specialArray[3];
+    }
+    
+    public int getIntelligence() {
+        return specialArray[4];
+    }
+    
+    public int getAgility() {
+        return specialArray[5];
+    }
+    
+    public int getLuck() {
+        return specialArray[6];
+    }
 
     /**
      * Generates a random number.
