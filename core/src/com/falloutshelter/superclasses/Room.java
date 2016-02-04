@@ -30,6 +30,8 @@ public abstract class Room {
         level = 1;
         maxCapacity = 2;
         size = 1;
+        this.requiredSkill = this.requiredSkill.toLowerCase();
+        this.requiredSkill = this.requiredSkill.replaceAll(" ", "");
     }
 
     public float getX() {

@@ -85,7 +85,7 @@ public class WorldRenderer implements Screen {
                 System.out.println(d);
             }
         }
-
+        
         if (nextSave == secondsPassed) {
             //Save();
             //System.out.println("Saved");
@@ -155,7 +155,6 @@ public class WorldRenderer implements Screen {
     }
 
     private void Save() {
-
         try {
             // Open a file to write to, named SavedObj.sav.
             FileOutputStream saveFile = new FileOutputStream("SaveGame.sav");
