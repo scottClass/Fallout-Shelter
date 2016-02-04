@@ -66,6 +66,7 @@ public abstract class Room {
 
     public void upgradeSize() {
         size++;
+        maxCapacity += 2;
     }
 
     public abstract int collectResource();
