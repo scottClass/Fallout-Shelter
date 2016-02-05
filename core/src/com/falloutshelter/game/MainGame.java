@@ -5,6 +5,7 @@
  */
 package com.falloutshelter.game;
 
+import com.badlogic.gdx.Gdx;
 import com.falloutshelter.screens.WorldRenderer;
 import com.badlogic.gdx.Screen;
 

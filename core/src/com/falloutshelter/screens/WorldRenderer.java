@@ -10,6 +10,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
@@ -39,6 +40,7 @@ public class WorldRenderer implements Screen {
     private int caps;
     private BitmapFont font;
     private SpriteBatch batch;
+    private Texture in;
     private Array<Dweller> dwellers;
 
     public WorldRenderer() {
@@ -60,6 +62,7 @@ public class WorldRenderer implements Screen {
         font.setColor(Color.GREEN);
         secondsPassed = 0;
         nextSave = secondsPassed + 10;
+        in = new Texture("test.png");
         //Load();
     }
 
@@ -94,6 +97,7 @@ public class WorldRenderer implements Screen {
 
         batch.begin();
         font.draw(batch, secondsPassed + "", 10, 20);
+        batch.draw(in, 50, 50, 100, 50);
         batch.end();
     }
 
