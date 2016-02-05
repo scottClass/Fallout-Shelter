@@ -221,7 +221,13 @@ public class Dweller extends Entity {
     
     @Override
     public String toString() {
-        return firstName + " " + lastName + "\nS: " + specialArray[0] + "\nP: " + specialArray[1] + 
+        String gender;
+        if(isFemale) {
+            gender = "Female";
+        } else {
+            gender = "Male";
+        }
+        return firstName + " " + lastName + "\n" + gender + "\nS: " + specialArray[0] + "\nP: " + specialArray[1] + 
                 "\nE: " + specialArray[2] + "\nC: " + specialArray[3] + "\nI: " + specialArray[4] + 
                 "\nA: " + specialArray[5] + "\nL: " + specialArray[6] + "\n"; 
     }
