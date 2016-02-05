@@ -6,6 +6,7 @@
 package com.falloutshelter.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -80,13 +81,19 @@ public class WorldRenderer implements Screen {
                 e.printStackTrace();
             }
         } else if (Gdx.input.isKeyJustPressed(Keys.R)) {
-            dwellers.add(new Dweller(1, 1, 1, 1));
-            System.out.println(dwellers.get(numDwellers));
-            numDwellers++;
+            //dwellers.add(new Dweller(20, 20, 50, 50));
+            //System.out.println(dwellers.get(numDwellers));
+            //numDwellers++;
         } else if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
             for (Dweller d : dwellers) {
                 System.out.println(d);
             }
+        } else if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            int clickX = Gdx.input.getX();
+            int clickY = (Gdx.graphics.getHeight() - Gdx.input.getY());;
+            dwellers.add(new Dweller(clickX, clickY, 50, 50));
+            System.out.println(dwellers.get(numDwellers));
+            numDwellers++;
         }
         
         if (nextSave == secondsPassed) {
@@ -97,7 +104,10 @@ public class WorldRenderer implements Screen {
 
         batch.begin();
         font.draw(batch, secondsPassed + "", 10, 20);
-        batch.draw(in, 50, 50, 100, 50);
+        for(Dweller d: dwellers) {
+            batch.draw(in, d.getX(), d.getY(), d.getWidth(), d.getHeight());
+        }
+        //batch.draw(in, 50, 50, 100, 50);
         batch.end();
     }
 
