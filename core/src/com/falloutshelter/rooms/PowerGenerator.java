@@ -22,4 +22,9 @@ public class PowerGenerator extends Room {
         return 2 ^ (super.getSize() - 1) * 10 + 2 * (super.getSize() - 1) + super.getLevel();
     }
 
+    @Override
+    public int getCost() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

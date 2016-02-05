@@ -22,6 +22,7 @@ public abstract class Room {
     private int maxCapacity;
     private Array<Dweller> dwellers;
     private String requiredSkill;
+    private int cost;
 
     public Room(float x, float y, float width, float height, String requiredSkill) {
         rect = new Rectangle(x, y, width, height);
@@ -68,6 +69,8 @@ public abstract class Room {
         size++;
         maxCapacity += 2;
     }
+    
+    public abstract int getCost();
 
     public abstract int collectResource();
 

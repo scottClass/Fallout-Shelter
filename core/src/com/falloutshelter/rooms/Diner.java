@@ -22,4 +22,9 @@ public class Diner extends Room {
         return (2 * super.getSize() * (super.getLevel() + 4)) - 2;
     }
 
+    @Override
+    public int getCost() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

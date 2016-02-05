@@ -39,6 +39,10 @@ public abstract class Entity {
         return rect.height;
     }
     
+    public Rectangle getRect() {
+        return rect;
+    }
+    
     public int getHealth() {
         return health;
     }

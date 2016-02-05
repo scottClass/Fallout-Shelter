@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.falloutshelter.screens;
+package com.falloutshelter.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -14,8 +14,20 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.falloutshelter.characters.Dweller;
+import com.falloutshelter.rooms.Diner;
+import com.falloutshelter.rooms.LivingQuarters;
+import com.falloutshelter.rooms.PowerGenerator;
+import com.falloutshelter.rooms.WaterPurification;
+import static com.falloutshelter.game.WorldRenderer.BuildState.DINER;
+import static com.falloutshelter.game.WorldRenderer.BuildState.LIVINGQ;
+import static com.falloutshelter.game.WorldRenderer.BuildState.NOTHING;
+import static com.falloutshelter.game.WorldRenderer.BuildState.POWERG;
+import static com.falloutshelter.game.WorldRenderer.BuildState.WATERP;
+import static com.falloutshelter.game.WorldRenderer.State.BUILD;
+import static com.falloutshelter.game.WorldRenderer.State.SELECT;
 import com.falloutshelter.superclasses.Room;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -29,7 +41,7 @@ import java.io.ObjectOutputStream;
  * @author scott
  */
 public class WorldRenderer implements Screen {
-
+    
     private Array<Room> rooms;
     private long startTime;
     private long secondsPassed;
@@ -38,18 +50,40 @@ public class WorldRenderer implements Screen {
     private int food, maxFood;
     private int water, maxWater;
     private int numDwellers, maxDwellers;
+    private int numRooms;
     private int caps;
     private BitmapFont font;
     private SpriteBatch batch;
     private Texture in;
     private Array<Dweller> dwellers;
-
+    private State currentFirstState;
+    private BuildState currentBuildState;
+    private boolean buttonDown;
+    private Dweller currentSelected;
+    
+    public enum State {
+        
+        BUILD, SELECT,
+    }
+    
+    public enum BuildState {
+        
+        DINER, POWERG, WATERP, LIVINGQ, NOTHING,
+    }
+    
     public WorldRenderer() {
+        currentFirstState = SELECT;
+        currentBuildState = NOTHING;
+        currentSelected = null;
+        
         numDwellers = 0;
-        System.out.println();
+        numRooms = 0;
+        
         dwellers = new Array<Dweller>();
         rooms = new Array<Room>();
+        
         startTime = System.currentTimeMillis();
+        
         energy = 50;
         food = 50;
         water = 50;
@@ -58,15 +92,19 @@ public class WorldRenderer implements Screen {
         maxWater = 100;
         caps = 500;
         maxDwellers = 20;
+        
         font = new BitmapFont();
         batch = new SpriteBatch();
         font.setColor(Color.GREEN);
+        
         secondsPassed = 0;
         nextSave = secondsPassed + 10;
+        
         in = new Texture("test.png");
+        buttonDown = false;
         //Load();
     }
-
+    
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -81,19 +119,75 @@ public class WorldRenderer implements Screen {
                 e.printStackTrace();
             }
         } else if (Gdx.input.isKeyJustPressed(Keys.R)) {
-            //dwellers.add(new Dweller(20, 20, 50, 50));
-            //System.out.println(dwellers.get(numDwellers));
-            //numDwellers++;
+            dwellers.add(new Dweller(20, 20, 50, 50));
+            System.out.println(dwellers.get(numDwellers));
+            numDwellers++;
+        } else if (Gdx.input.isKeyJustPressed(Keys.B)) {
+            if (currentFirstState == BUILD) {
+                currentFirstState = SELECT;
+                System.out.println(currentFirstState);
+            } else if (currentFirstState == SELECT) {
+                currentFirstState = BUILD;
+                System.out.println(currentFirstState);
+            }
         } else if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
             for (Dweller d : dwellers) {
                 System.out.println(d);
             }
         } else if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            buttonDown = true;
+        } else if (!Gdx.input.isButtonPressed(Input.Buttons.LEFT) && buttonDown) {
+            buttonDown = false;
             int clickX = Gdx.input.getX();
-            int clickY = (Gdx.graphics.getHeight() - Gdx.input.getY());;
-            dwellers.add(new Dweller(clickX, clickY, 50, 50));
-            System.out.println(dwellers.get(numDwellers));
-            numDwellers++;
+            int clickY = (Gdx.graphics.getHeight() - Gdx.input.getY());
+            if (currentFirstState == BUILD) {
+                if (currentBuildState == DINER) {
+                    rooms.add(new Diner(clickX, clickY, 100, 50));
+                    numRooms++;
+                    if (caps - rooms.get(numRooms).getCost() < 0) {
+                        rooms.removeIndex(numRooms);
+                        numRooms--;
+                    } else {
+                        caps -= rooms.get(numRooms).getCost();
+                    }
+                } else if (currentBuildState == POWERG) {
+                    rooms.add(new PowerGenerator(clickX, clickY, 100, 50));
+                    numRooms++;
+                    if (caps - rooms.get(numRooms).getCost() < 0) {
+                        rooms.removeIndex(numRooms);
+                        numRooms--;
+                    } else {
+                        caps -= rooms.get(numRooms).getCost();
+                    }
+                } else if (currentBuildState == WATERP) {
+                    rooms.add(new WaterPurification(clickX, clickY, 100, 50));
+                    numRooms++;
+                    if (caps - rooms.get(numRooms).getCost() < 0) {
+                        rooms.removeIndex(numRooms);
+                        numRooms--;
+                    } else {
+                        caps -= rooms.get(numRooms).getCost();
+                    }
+                } else if (currentBuildState == LIVINGQ) {
+                    rooms.add(new LivingQuarters(clickX, clickY, 100, 50));
+                    numRooms++;
+                    if (caps - rooms.get(numRooms).getCost() < 0) {
+                        rooms.removeIndex(numRooms);
+                        numRooms--;
+                    } else {
+                        caps -= rooms.get(numRooms).getCost();
+                    }
+                } else {
+                    System.out.println("No build type selected");
+                }
+            } else if (currentFirstState == SELECT) {
+                Rectangle rect = new Rectangle(clickX, clickY, 5, 5);
+                for(Dweller d: dwellers) {
+                    if(rect.overlaps(d.getRect())) {
+                        currentSelected = d;
+                    }
+                }
+            }
         }
         
         if (nextSave == secondsPassed) {
@@ -101,40 +195,43 @@ public class WorldRenderer implements Screen {
             //System.out.println("Saved");
             nextSave = secondsPassed + 10;
         }
-
+        
         batch.begin();
         font.draw(batch, secondsPassed + "", 10, 20);
-        for(Dweller d: dwellers) {
+        for (Dweller d : dwellers) {
             batch.draw(in, d.getX(), d.getY(), d.getWidth(), d.getHeight());
+        }
+        for (Room r : rooms) {
+            batch.draw(in, r.getX(), r.getY(), r.getWidth(), r.getHeight());
         }
         //batch.draw(in, 50, 50, 100, 50);
         batch.end();
     }
-
+    
     @Override
     public void show() {
     }
-
+    
     @Override
     public void resize(int width, int height) {
     }
-
+    
     @Override
     public void pause() {
     }
-
+    
     @Override
     public void resume() {
     }
-
+    
     @Override
     public void hide() {
     }
-
+    
     @Override
     public void dispose() {
     }
-
+    
     private void Load() {
         try {
             // Open file to read from, named SavedObj.sav.
@@ -142,7 +239,7 @@ public class WorldRenderer implements Screen {
 
             // Create an ObjectInputStream to get objects from save file.
             ObjectInputStream save = new ObjectInputStream(saveFile);
-
+            
             energy = (Integer) save.readObject();
             System.out.println(energy);
             food = (Integer) save.readObject();
@@ -167,7 +264,7 @@ public class WorldRenderer implements Screen {
             exc.printStackTrace(); // If there was an error, print the info.
         }
     }
-
+    
     private void Save() {
         try {
             // Open a file to write to, named SavedObj.sav.
@@ -194,9 +291,9 @@ public class WorldRenderer implements Screen {
             exc.printStackTrace();
             // If there was an error, print the info.
         }
-
+        
     }
-
+    
     private void clearSave() throws FileNotFoundException, IOException {
         FileOutputStream saveFile = new FileOutputStream("SaveGame.sav");
         saveFile.close();

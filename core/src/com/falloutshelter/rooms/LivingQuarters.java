@@ -21,5 +21,10 @@ public class LivingQuarters extends Room {
     public int collectResource() {
         return 0;
     }
+
+    @Override
+    public int getCost() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
