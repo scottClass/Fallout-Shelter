@@ -15,6 +15,7 @@ public class PowerGenerator extends Room {
 
     public PowerGenerator(float x, float y, float width, float height) {
         super(x, y, width, height, "strength");
+        super.setBaseCost(100);
     }
 
     @Override
@@ -23,8 +24,8 @@ public class PowerGenerator extends Room {
     }
 
     @Override
-    public int getCost() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int getCost(int NumBuilt) {
+        return super.getBaseCost() + (NumBuilt * 25);
     }
 
 }

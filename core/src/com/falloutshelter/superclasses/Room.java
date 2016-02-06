@@ -31,6 +31,7 @@ public abstract class Room {
         level = 1;
         maxCapacity = 2;
         size = 1;
+        cost = 100;
         this.requiredSkill = this.requiredSkill.toLowerCase();
         this.requiredSkill = this.requiredSkill.replaceAll(" ", "");
     }
@@ -70,8 +71,16 @@ public abstract class Room {
         maxCapacity += 2;
     }
     
-    public abstract int getCost();
-
+    public abstract int getCost(int NumBuilt);
+    
+    public void setBaseCost(int newCost) {
+        cost = newCost;
+    }
+    
+    public int getBaseCost() {
+        return cost;
+    }
+    
     public abstract int collectResource();
 
     public void setMaxCapacity(int cap) {

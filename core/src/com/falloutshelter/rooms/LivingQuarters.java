@@ -12,9 +12,10 @@ import com.falloutshelter.superclasses.Room;
  * @author scott
  */
 public class LivingQuarters extends Room {
-    
+
     public LivingQuarters(float x, float y, float width, float height) {
         super(x, y, width, height, "charisma");
+        super.setBaseCost(100);
     }
 
     @Override
@@ -23,8 +24,8 @@ public class LivingQuarters extends Room {
     }
 
     @Override
-    public int getCost() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int getCost(int NumBuilt) {
+        return super.getBaseCost() + (NumBuilt * 25);
     }
-    
+
 }

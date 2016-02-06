@@ -60,6 +60,7 @@ public class WorldRenderer implements Screen {
     private BuildState currentBuildState;
     private boolean buttonDown;
     private Dweller currentSelected;
+    int numWaterP, numLivingQ, numPowerG, numDiner;
     
     public enum State {
         
@@ -144,38 +145,46 @@ public class WorldRenderer implements Screen {
                 if (currentBuildState == DINER) {
                     rooms.add(new Diner(clickX, clickY, 100, 50));
                     numRooms++;
-                    if (caps - rooms.get(numRooms).getCost() < 0) {
+                    numDiner++;
+                    if (caps - rooms.get(numRooms).getCost(numDiner) < 0) {
                         rooms.removeIndex(numRooms);
                         numRooms--;
+                        numDiner--;
                     } else {
-                        caps -= rooms.get(numRooms).getCost();
+                        caps -= rooms.get(numRooms).getCost(numDiner);
                     }
                 } else if (currentBuildState == POWERG) {
                     rooms.add(new PowerGenerator(clickX, clickY, 100, 50));
                     numRooms++;
-                    if (caps - rooms.get(numRooms).getCost() < 0) {
+                    numPowerG++;
+                    if (caps - rooms.get(numRooms).getCost(numPowerG) < 0) {
                         rooms.removeIndex(numRooms);
                         numRooms--;
+                        numPowerG--;
                     } else {
-                        caps -= rooms.get(numRooms).getCost();
+                        caps -= rooms.get(numRooms).getCost(numPowerG);
                     }
                 } else if (currentBuildState == WATERP) {
                     rooms.add(new WaterPurification(clickX, clickY, 100, 50));
                     numRooms++;
-                    if (caps - rooms.get(numRooms).getCost() < 0) {
+                    numWaterP++;
+                    if (caps - rooms.get(numRooms).getCost(numWaterP) < 0) {
                         rooms.removeIndex(numRooms);
                         numRooms--;
+                        numWaterP--;
                     } else {
-                        caps -= rooms.get(numRooms).getCost();
+                        caps -= rooms.get(numRooms).getCost(numWaterP);
                     }
                 } else if (currentBuildState == LIVINGQ) {
                     rooms.add(new LivingQuarters(clickX, clickY, 100, 50));
                     numRooms++;
-                    if (caps - rooms.get(numRooms).getCost() < 0) {
+                    numLivingQ++;
+                    if (caps - rooms.get(numRooms).getCost(numLivingQ) < 0) {
                         rooms.removeIndex(numRooms);
                         numRooms--;
+                        numLivingQ--;
                     } else {
-                        caps -= rooms.get(numRooms).getCost();
+                        caps -= rooms.get(numRooms).getCost(numLivingQ);
                     }
                 } else {
                     System.out.println("No build type selected");
@@ -206,6 +215,10 @@ public class WorldRenderer implements Screen {
         }
         //batch.draw(in, 50, 50, 100, 50);
         batch.end();
+        if(numRooms != numWaterP + numLivingQ + numPowerG + numDiner) {
+            System.out.println("counting went wrong somewhere");
+            numRooms = numWaterP + numLivingQ + numPowerG + numDiner;
+        }
     }
     
     @Override

@@ -15,6 +15,7 @@ public class Diner extends Room {
 
     public Diner(float x, float y, float width, float height) {
         super(x, y, width, height, "agility");
+        super.setBaseCost(100);
     }
 
     @Override
@@ -23,8 +24,8 @@ public class Diner extends Room {
     }
 
     @Override
-    public int getCost() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int getCost(int NumBuilt) {
+        return super.getBaseCost() + (NumBuilt * 25);
     }
 
 }
