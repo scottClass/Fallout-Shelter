@@ -71,7 +71,7 @@ public abstract class Room {
         maxCapacity += 2;
     }
     
-    public abstract int getCost(int NumBuilt);
+    public abstract int getCost(int numBuilt);
     
     public void setBaseCost(int newCost) {
         cost = newCost;

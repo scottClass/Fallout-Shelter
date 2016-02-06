@@ -24,8 +24,8 @@ public class LivingQuarters extends Room {
     }
 
     @Override
-    public int getCost(int NumBuilt) {
-        return super.getBaseCost() + (NumBuilt * 25);
+    public int getCost(int numBuilt) {
+        return super.getBaseCost() + (numBuilt * 25);
     }
 
 }

@@ -41,7 +41,7 @@ import java.io.ObjectOutputStream;
  * @author scott
  */
 public class WorldRenderer implements Screen {
-    
+
     private Array<Room> rooms;
     private long startTime;
     private long secondsPassed;
@@ -50,6 +50,8 @@ public class WorldRenderer implements Screen {
     private int food, maxFood;
     private int water, maxWater;
     private int numDwellers, maxDwellers;
+    private int radAway, maxRadAway;
+    private int stimpak, maxStimpak;
     private int numRooms;
     private int caps;
     private BitmapFont font;
@@ -61,30 +63,35 @@ public class WorldRenderer implements Screen {
     private boolean buttonDown;
     private Dweller currentSelected;
     int numWaterP, numLivingQ, numPowerG, numDiner;
-    
+
     public enum State {
-        
+
         BUILD, SELECT,
     }
-    
+
     public enum BuildState {
-        
+
         DINER, POWERG, WATERP, LIVINGQ, NOTHING,
     }
-    
+
     public WorldRenderer() {
         currentFirstState = SELECT;
         currentBuildState = NOTHING;
         currentSelected = null;
-        
+
+        radAway = 0;
+        maxRadAway = 15;
+        stimpak = 0;
+        maxStimpak = 20;
+
         numDwellers = 0;
         numRooms = 0;
-        
+
         dwellers = new Array<Dweller>();
         rooms = new Array<Room>();
-        
+
         startTime = System.currentTimeMillis();
-        
+
         energy = 50;
         food = 50;
         water = 50;
@@ -93,19 +100,19 @@ public class WorldRenderer implements Screen {
         maxWater = 100;
         caps = 500;
         maxDwellers = 20;
-        
+
         font = new BitmapFont();
         batch = new SpriteBatch();
         font.setColor(Color.GREEN);
-        
+
         secondsPassed = 0;
         nextSave = secondsPassed + 10;
-        
+
         in = new Texture("test.png");
         buttonDown = false;
         //Load();
     }
-    
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -191,20 +198,20 @@ public class WorldRenderer implements Screen {
                 }
             } else if (currentFirstState == SELECT) {
                 Rectangle rect = new Rectangle(clickX, clickY, 5, 5);
-                for(Dweller d: dwellers) {
-                    if(rect.overlaps(d.getRect())) {
+                for (Dweller d : dwellers) {
+                    if (rect.overlaps(d.getRect())) {
                         currentSelected = d;
                     }
                 }
             }
         }
-        
+
         if (nextSave == secondsPassed) {
             //Save();
             //System.out.println("Saved");
             nextSave = secondsPassed + 10;
         }
-        
+
         batch.begin();
         font.draw(batch, secondsPassed + "", 10, 20);
         for (Dweller d : dwellers) {
@@ -215,36 +222,36 @@ public class WorldRenderer implements Screen {
         }
         //batch.draw(in, 50, 50, 100, 50);
         batch.end();
-        if(numRooms != numWaterP + numLivingQ + numPowerG + numDiner) {
+        if (numRooms != numWaterP + numLivingQ + numPowerG + numDiner) {
             System.out.println("counting went wrong somewhere");
             numRooms = numWaterP + numLivingQ + numPowerG + numDiner;
         }
     }
-    
+
     @Override
     public void show() {
     }
-    
+
     @Override
     public void resize(int width, int height) {
     }
-    
+
     @Override
     public void pause() {
     }
-    
+
     @Override
     public void resume() {
     }
-    
+
     @Override
     public void hide() {
     }
-    
+
     @Override
     public void dispose() {
     }
-    
+
     private void Load() {
         try {
             // Open file to read from, named SavedObj.sav.
@@ -252,7 +259,7 @@ public class WorldRenderer implements Screen {
 
             // Create an ObjectInputStream to get objects from save file.
             ObjectInputStream save = new ObjectInputStream(saveFile);
-            
+
             energy = (Integer) save.readObject();
             System.out.println(energy);
             food = (Integer) save.readObject();
@@ -277,7 +284,7 @@ public class WorldRenderer implements Screen {
             exc.printStackTrace(); // If there was an error, print the info.
         }
     }
-    
+
     private void Save() {
         try {
             // Open a file to write to, named SavedObj.sav.
@@ -304,9 +311,9 @@ public class WorldRenderer implements Screen {
             exc.printStackTrace();
             // If there was an error, print the info.
         }
-        
+
     }
-    
+
     private void clearSave() throws FileNotFoundException, IOException {
         FileOutputStream saveFile = new FileOutputStream("SaveGame.sav");
         saveFile.close();
