@@ -133,7 +133,7 @@ public class WorldRenderer implements Screen {
             batch.draw(in, r.getX(), r.getY(), r.getWidth(), r.getHeight());
         }
         batch.draw(buildIcon, buildIconRect.getX(), buildIconRect.getY(), buildIconRect.getWidth(), buildIconRect.getHeight());
-        //batch.draw(in, 50, 50, 100, 50);
+        batch.draw(in, 50, 50, 100, 50);
         batch.end();
         if (numRooms != numWaterP + numLivingQ + numPowerG + numDiner) {
             System.out.println("counting went wrong somewhere");
