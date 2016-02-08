@@ -121,6 +121,27 @@ public class WorldRenderer implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        
+        CalculateLogic(delta);
+        
+        batch.begin();
+        font.draw(batch, secondsPassed + "", 10, 20);
+        for (Dweller d : dwellers) {
+            batch.draw(in, d.getX(), d.getY(), d.getWidth(), d.getHeight());
+        }
+        for (Room r : rooms) {
+            batch.draw(in, r.getX(), r.getY(), r.getWidth(), r.getHeight());
+        }
+        batch.draw(buildIcon, buildIconRect.getX(), buildIconRect.getY(), buildIconRect.getWidth(), buildIconRect.getHeight());
+        //batch.draw(in, 50, 50, 100, 50);
+        batch.end();
+        if (numRooms != numWaterP + numLivingQ + numPowerG + numDiner) {
+            System.out.println("counting went wrong somewhere");
+            numRooms = numWaterP + numLivingQ + numPowerG + numDiner;
+        }
+    }
+    
+    public void CalculateLogic(float delta) {
         secondsPassed = (System.currentTimeMillis() - startTime) / 1000;
         if (Gdx.input.isKeyJustPressed(Keys.L)) {
             //Load();
@@ -217,22 +238,6 @@ public class WorldRenderer implements Screen {
             //Save();
             //System.out.println("Saved");
             nextSave = secondsPassed + 10;
-        }
-
-        batch.begin();
-        font.draw(batch, secondsPassed + "", 10, 20);
-        for (Dweller d : dwellers) {
-            batch.draw(in, d.getX(), d.getY(), d.getWidth(), d.getHeight());
-        }
-        for (Room r : rooms) {
-            batch.draw(in, r.getX(), r.getY(), r.getWidth(), r.getHeight());
-        }
-        batch.draw(buildIcon, buildIconRect.getX(), buildIconRect.getY(), buildIconRect.getWidth(), buildIconRect.getHeight());
-        //batch.draw(in, 50, 50, 100, 50);
-        batch.end();
-        if (numRooms != numWaterP + numLivingQ + numPowerG + numDiner) {
-            System.out.println("counting went wrong somewhere");
-            numRooms = numWaterP + numLivingQ + numPowerG + numDiner;
         }
     }
 
