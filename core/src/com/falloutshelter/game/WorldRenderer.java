@@ -56,7 +56,7 @@ public class WorldRenderer implements Screen {
     private int caps;
     private BitmapFont font;
     private SpriteBatch batch;
-   
+
     private Rectangle buildIconRect;
     private Array<Dweller> dwellers;
     private State currentFirstState;
@@ -110,7 +110,6 @@ public class WorldRenderer implements Screen {
         secondsPassed = 0;
         nextSave = secondsPassed + 10;
 
-        
         buildIconRect = new Rectangle(Gdx.graphics.getWidth() - 40, Gdx.graphics.getHeight() - 40, 30, 30);
         buttonDown = false;
         //Load();
@@ -173,6 +172,7 @@ public class WorldRenderer implements Screen {
                     if (getCost("diner")) {
                         rooms.add(new Diner(clickX, clickY, 100, 50));
                         numRooms++;
+                        System.out.println(caps);
                     }
                 } else if (currentBuildState == POWERG) {
                     if (getCost("powergenerator")) {
@@ -213,8 +213,8 @@ public class WorldRenderer implements Screen {
     }
 
     public boolean getCost(String desiredBuild) {
-        if (desiredBuild.equals("diner") || desiredBuild.equals("powergenerator") || 
-                desiredBuild.equals("waterpurification") || desiredBuild.equals("livingquarters")) {
+        if (desiredBuild.equals("diner") || desiredBuild.equals("powergenerator")
+                || desiredBuild.equals("waterpurification") || desiredBuild.equals("livingquarters")) {
             int n = 0;
             for (Room r : rooms) {
                 if (r.getRoomName().equals(desiredBuild)) {
@@ -222,6 +222,7 @@ public class WorldRenderer implements Screen {
                 }
             }
             if ((100 + (25 * n)) > caps) {
+                caps = caps - (100 + (25 * n));
                 return false;
             } else {
                 return true;
@@ -234,6 +235,7 @@ public class WorldRenderer implements Screen {
                 }
             }
             if ((400 + (100 * n)) > caps) {
+                caps = caps - (400 + (100 * n));
                 return false;
             } else {
                 return true;
