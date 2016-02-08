@@ -5,10 +5,19 @@
  */
 package com.falloutshelter.game;
 
+import com.badlogic.gdx.graphics.Texture;
+
 /**
  *
  * @author Scott
  */
 public class AssetManager {
-    
+
+    public Texture in;
+    public Texture buildIcon;
+
+    public void Load() {
+        in = new Texture("test.png");
+        buildIcon = new Texture("build_icon.png");
+    }
 }

@@ -23,8 +23,9 @@ public abstract class Room {
     private Array<Dweller> dwellers;
     private String requiredSkill;
     private int cost;
+    private String roomName;
 
-    public Room(float x, float y, float width, float height, String requiredSkill) {
+    public Room(float x, float y, float width, float height, String requiredSkill, String roomName) {
         rect = new Rectangle(x, y, width, height);
         this.requiredSkill = requiredSkill;
         dwellers = new Array<Dweller>();
@@ -34,6 +35,7 @@ public abstract class Room {
         cost = 100;
         this.requiredSkill = this.requiredSkill.toLowerCase();
         this.requiredSkill = this.requiredSkill.replaceAll(" ", "");
+        this.roomName = roomName;
     }
 
     public float getX() {
@@ -55,6 +57,10 @@ public abstract class Room {
     public int getLevel() {
         return level;
     }
+    
+    public String getRoomName() {
+        return roomName;
+    }
 
     public void levelUp() {
         if (level < 3) {
@@ -71,7 +77,6 @@ public abstract class Room {
         maxCapacity += 2;
     }
     
-    public abstract int getCost(int numBuilt);
     
     public void setBaseCost(int newCost) {
         cost = newCost;

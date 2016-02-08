@@ -56,15 +56,14 @@ public class WorldRenderer implements Screen {
     private int caps;
     private BitmapFont font;
     private SpriteBatch batch;
-    private Texture in;
-    private Texture buildIcon;
+   
     private Rectangle buildIconRect;
     private Array<Dweller> dwellers;
     private State currentFirstState;
     private BuildState currentBuildState;
     private boolean buttonDown;
     private Dweller currentSelected;
-    int numWaterP, numLivingQ, numPowerG, numDiner;
+    AssetManager assetmanager = new AssetManager();
 
     public enum State {
 
@@ -77,10 +76,11 @@ public class WorldRenderer implements Screen {
     }
 
     public WorldRenderer() {
+        assetmanager.Load();
         currentFirstState = SELECT;
-        currentBuildState = NOTHING;
+        currentBuildState = DINER;
         currentSelected = null;
-        
+
         radAway = 0;
         maxRadAway = 15;
         stimpak = 0;
@@ -110,8 +110,7 @@ public class WorldRenderer implements Screen {
         secondsPassed = 0;
         nextSave = secondsPassed + 10;
 
-        in = new Texture("test.png");
-        buildIcon = new Texture("build_icon.png");
+        
         buildIconRect = new Rectangle(Gdx.graphics.getWidth() - 40, Gdx.graphics.getHeight() - 40, 30, 30);
         buttonDown = false;
         //Load();
@@ -121,26 +120,22 @@ public class WorldRenderer implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
+
         CalculateLogic(delta);
-        
+
         batch.begin();
         font.draw(batch, secondsPassed + "", 10, 20);
         for (Dweller d : dwellers) {
-            batch.draw(in, d.getX(), d.getY(), d.getWidth(), d.getHeight());
+            batch.draw(assetmanager.in, d.getX(), d.getY(), d.getWidth(), d.getHeight());
         }
         for (Room r : rooms) {
-            batch.draw(in, r.getX(), r.getY(), r.getWidth(), r.getHeight());
+            batch.draw(assetmanager.in, r.getX(), r.getY(), r.getWidth(), r.getHeight());
         }
-        batch.draw(buildIcon, buildIconRect.getX(), buildIconRect.getY(), buildIconRect.getWidth(), buildIconRect.getHeight());
-        batch.draw(in, 50, 50, 100, 50);
+        batch.draw(assetmanager.buildIcon, buildIconRect.getX(), buildIconRect.getY(), buildIconRect.getWidth(), buildIconRect.getHeight());
+        batch.draw(assetmanager.in, 50, 50, 100, 50);
         batch.end();
-        if (numRooms != numWaterP + numLivingQ + numPowerG + numDiner) {
-            System.out.println("counting went wrong somewhere");
-            numRooms = numWaterP + numLivingQ + numPowerG + numDiner;
-        }
     }
-    
+
     public void CalculateLogic(float delta) {
         secondsPassed = (System.currentTimeMillis() - startTime) / 1000;
         if (Gdx.input.isKeyJustPressed(Keys.L)) {
@@ -175,55 +170,31 @@ public class WorldRenderer implements Screen {
             int clickY = (Gdx.graphics.getHeight() - Gdx.input.getY());
             if (currentFirstState == BUILD) {
                 if (currentBuildState == DINER) {
-                    rooms.add(new Diner(clickX, clickY, 100, 50));
-                    numRooms++;
-                    numDiner++;
-                    if (caps - rooms.get(numRooms).getCost(numDiner) < 0) {
-                        rooms.removeIndex(numRooms);
-                        numRooms--;
-                        numDiner--;
-                    } else {
-                        caps -= rooms.get(numRooms).getCost(numDiner);
+                    if (getCost("diner")) {
+                        rooms.add(new Diner(clickX, clickY, 100, 50));
+                        numRooms++;
                     }
                 } else if (currentBuildState == POWERG) {
-                    rooms.add(new PowerGenerator(clickX, clickY, 100, 50));
-                    numRooms++;
-                    numPowerG++;
-                    if (caps - rooms.get(numRooms).getCost(numPowerG) < 0) {
-                        rooms.removeIndex(numRooms);
-                        numRooms--;
-                        numPowerG--;
-                    } else {
-                        caps -= rooms.get(numRooms).getCost(numPowerG);
+                    if (getCost("powergenerator")) {
+                        rooms.add(new PowerGenerator(clickX, clickY, 100, 50));
+                        numRooms++;
                     }
                 } else if (currentBuildState == WATERP) {
-                    rooms.add(new WaterPurification(clickX, clickY, 100, 50));
-                    numRooms++;
-                    numWaterP++;
-                    if (caps - rooms.get(numRooms).getCost(numWaterP) < 0) {
-                        rooms.removeIndex(numRooms);
-                        numRooms--;
-                        numWaterP--;
-                    } else {
-                        caps -= rooms.get(numRooms).getCost(numWaterP);
+                    if (getCost("waterpurification")) {
+                        rooms.add(new WaterPurification(clickX, clickY, 100, 50));
+                        numRooms++;
                     }
                 } else if (currentBuildState == LIVINGQ) {
-                    rooms.add(new LivingQuarters(clickX, clickY, 100, 50));
-                    numRooms++;
-                    numLivingQ++;
-                    if (caps - rooms.get(numRooms).getCost(numLivingQ) < 0) {
-                        rooms.removeIndex(numRooms);
-                        numRooms--;
-                        numLivingQ--;
-                    } else {
-                        caps -= rooms.get(numRooms).getCost(numLivingQ);
+                    if (getCost("livingquarters")) {
+                        rooms.add(new LivingQuarters(clickX, clickY, 100, 50));
+                        numRooms++;
                     }
                 } else {
                     System.out.println("No build type selected");
                 }
             } else if (currentFirstState == SELECT) {
                 Rectangle rect = new Rectangle(clickX, clickY, 5, 5);
-                if(rect.overlaps(buildIconRect)) {
+                if (rect.overlaps(buildIconRect)) {
                     System.out.println("thing");
                 }
                 for (Dweller d : dwellers) {
@@ -239,6 +210,37 @@ public class WorldRenderer implements Screen {
             //System.out.println("Saved");
             nextSave = secondsPassed + 10;
         }
+    }
+
+    public boolean getCost(String desiredBuild) {
+        if (desiredBuild.equals("diner") || desiredBuild.equals("powergenerator") || 
+                desiredBuild.equals("waterpurification") || desiredBuild.equals("livingquarters")) {
+            int n = 0;
+            for (Room r : rooms) {
+                if (r.getRoomName().equals(desiredBuild)) {
+                    n++;
+                }
+            }
+            if ((100 + (25 * n)) > caps) {
+                return false;
+            } else {
+                return true;
+            }
+        } else if (desiredBuild.equals("medbay") || desiredBuild.equals("sciencelab")) {
+            int n = 0;
+            for (Room r : rooms) {
+                if (r.getRoomName().equals(desiredBuild)) {
+                    n++;
+                }
+            }
+            if ((400 + (100 * n)) > caps) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        //If statement reaches here something went wrong
+        return false;
     }
 
     @Override

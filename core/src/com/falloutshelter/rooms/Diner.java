@@ -14,18 +14,13 @@ import com.falloutshelter.superclasses.Room;
 public class Diner extends Room {
 
     public Diner(float x, float y, float width, float height) {
-        super(x, y, width, height, "agility");
+        super(x, y, width, height, "agility", "diner");
         super.setBaseCost(100);
     }
 
     @Override
     public int collectResource() {
         return (2 * super.getSize() * (super.getLevel() + 4)) - 2;
-    }
-
-    @Override
-    public int getCost(int numBuilt) {
-        return super.getBaseCost() + (numBuilt * 25);
     }
 
 }

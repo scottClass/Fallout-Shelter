@@ -14,7 +14,7 @@ import com.falloutshelter.superclasses.Room;
 public class PowerGenerator extends Room {
 
     public PowerGenerator(float x, float y, float width, float height) {
-        super(x, y, width, height, "strength");
+        super(x, y, width, height, "strength", "powergenerator");
         super.setBaseCost(100);
     }
 
@@ -22,10 +22,4 @@ public class PowerGenerator extends Room {
     public int collectResource() {
         return 2 ^ (super.getSize() - 1) * 10 + 2 * (super.getSize() - 1) + super.getLevel();
     }
-
-    @Override
-    public int getCost(int numBuilt) {
-        return super.getBaseCost() + (numBuilt * 25);
-    }
-
 }

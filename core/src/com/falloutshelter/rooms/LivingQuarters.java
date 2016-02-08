@@ -16,7 +16,7 @@ import com.falloutshelter.superclasses.Room;
 public class LivingQuarters extends Room {
 
     public LivingQuarters(float x, float y, float width, float height) {
-        super(x, y, width, height, "charisma");
+        super(x, y, width, height, "charisma", "livingquaters");
         super.setBaseCost(100);
     }
 
@@ -37,11 +37,6 @@ public class LivingQuarters extends Room {
             female.getPregnant();
         }
         return 0;
-    }
-
-    @Override
-    public int getCost(int numBuilt) {
-        return super.getBaseCost() + (numBuilt * 25);
     }
 
 }

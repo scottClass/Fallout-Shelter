@@ -14,7 +14,7 @@ import com.falloutshelter.superclasses.Room;
 public class WaterPurification extends Room {
 
     public WaterPurification(float x, float y, float width, float height) {
-        super(x, y, width, height, "perception");
+        super(x, y, width, height, "perception", "waterpurification");
         super.setBaseCost(100);
     }
 
@@ -23,10 +23,6 @@ public class WaterPurification extends Room {
         return (2*super.getSize()*(super.getLevel()+4))-2;
     }
 
-    @Override
-    public int getCost(int numBuilt) {
-        return super.getBaseCost() + (numBuilt * 25);
-    }
 
     
 }
