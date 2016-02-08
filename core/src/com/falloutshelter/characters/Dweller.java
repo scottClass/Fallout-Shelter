@@ -18,6 +18,7 @@ public class Dweller extends Entity {
     //The traits that make this dweller special
     private int[] specialArray;
     private boolean isFemale;
+    private boolean isPregnant;
     private String firstName;
     private String lastName;
     private Room assignedRoom;
@@ -37,6 +38,7 @@ public class Dweller extends Entity {
         } else {
             isFemale = true;
         }
+        isPregnant = false;
         firstName = randomFirstName();
         lastName = randomLastName();
         assignedRoom = null;
@@ -68,6 +70,14 @@ public class Dweller extends Entity {
         } else {
             return "male";
         }
+    }
+    
+    public boolean getIfPregnant() {
+        return isPregnant;
+    }
+    
+    public void getPregnant() {
+        isPregnant = true;
     }
 
     public String getFirstName() {

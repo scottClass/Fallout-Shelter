@@ -5,6 +5,8 @@
  */
 package com.falloutshelter.rooms;
 
+import com.badlogic.gdx.utils.Array;
+import com.falloutshelter.characters.Dweller;
 import com.falloutshelter.superclasses.Room;
 
 /**
@@ -20,6 +22,21 @@ public class LivingQuarters extends Room {
 
     @Override
     public int collectResource() {
+        Array<Dweller> temp;
+        temp = super.getAssignedDwellers();
+        Dweller female = null;
+        Dweller male = null;
+        for (Dweller d : temp) {
+
+            if (d.getGender().equals("female")) {
+                female = d;
+            } else if (d.getGender().equals("male")) {
+                male = d;
+            }
+        }
+        if (male != null && female != null) {
+            female.getPregnant();
+        }
         return 0;
     }
 

@@ -57,6 +57,7 @@ public class WorldRenderer implements Screen {
     private BitmapFont font;
     private SpriteBatch batch;
     private Texture in;
+    private Texture buildIcon;
     private Array<Dweller> dwellers;
     private State currentFirstState;
     private BuildState currentBuildState;
@@ -109,6 +110,7 @@ public class WorldRenderer implements Screen {
         nextSave = secondsPassed + 10;
 
         in = new Texture("test.png");
+        buildIcon = new Texture("build_icon.png");
         buttonDown = false;
         //Load();
     }
@@ -220,6 +222,7 @@ public class WorldRenderer implements Screen {
         for (Room r : rooms) {
             batch.draw(in, r.getX(), r.getY(), r.getWidth(), r.getHeight());
         }
+        batch.draw(buildIcon, Gdx.graphics.getWidth() - 40, Gdx.graphics.getHeight() - 40, 30, 30);
         //batch.draw(in, 50, 50, 100, 50);
         batch.end();
         if (numRooms != numWaterP + numLivingQ + numPowerG + numDiner) {
