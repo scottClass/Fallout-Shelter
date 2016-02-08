@@ -222,9 +222,9 @@ public class WorldRenderer implements Screen {
                 }
             }
             if ((100 + (25 * n)) > caps) {
-                caps = caps - (100 + (25 * n));
                 return false;
             } else {
+                caps = caps - (100 + (25 * n));
                 return true;
             }
         } else if (desiredBuild.equals("medbay") || desiredBuild.equals("sciencelab")) {
@@ -235,9 +235,9 @@ public class WorldRenderer implements Screen {
                 }
             }
             if ((400 + (100 * n)) > caps) {
-                caps = caps - (400 + (100 * n));
                 return false;
             } else {
+                caps = caps - (400 + (100 * n));
                 return true;
             }
         }
