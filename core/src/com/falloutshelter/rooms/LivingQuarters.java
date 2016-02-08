@@ -27,7 +27,6 @@ public class LivingQuarters extends Room {
         Dweller female = null;
         Dweller male = null;
         for (Dweller d : temp) {
-
             if (d.getGender().equals("female")) {
                 female = d;
             } else if (d.getGender().equals("male")) {

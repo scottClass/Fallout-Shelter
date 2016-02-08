@@ -58,6 +58,7 @@ public class WorldRenderer implements Screen {
     private SpriteBatch batch;
     private Texture in;
     private Texture buildIcon;
+    private Rectangle buildIconRect;
     private Array<Dweller> dwellers;
     private State currentFirstState;
     private BuildState currentBuildState;
@@ -79,7 +80,7 @@ public class WorldRenderer implements Screen {
         currentFirstState = SELECT;
         currentBuildState = NOTHING;
         currentSelected = null;
-
+        
         radAway = 0;
         maxRadAway = 15;
         stimpak = 0;
@@ -111,6 +112,7 @@ public class WorldRenderer implements Screen {
 
         in = new Texture("test.png");
         buildIcon = new Texture("build_icon.png");
+        buildIconRect = new Rectangle(Gdx.graphics.getWidth() - 40, Gdx.graphics.getHeight() - 40, 30, 30);
         buttonDown = false;
         //Load();
     }
@@ -200,6 +202,9 @@ public class WorldRenderer implements Screen {
                 }
             } else if (currentFirstState == SELECT) {
                 Rectangle rect = new Rectangle(clickX, clickY, 5, 5);
+                if(rect.overlaps(buildIconRect)) {
+                    System.out.println("thing");
+                }
                 for (Dweller d : dwellers) {
                     if (rect.overlaps(d.getRect())) {
                         currentSelected = d;
@@ -222,7 +227,7 @@ public class WorldRenderer implements Screen {
         for (Room r : rooms) {
             batch.draw(in, r.getX(), r.getY(), r.getWidth(), r.getHeight());
         }
-        batch.draw(buildIcon, Gdx.graphics.getWidth() - 40, Gdx.graphics.getHeight() - 40, 30, 30);
+        batch.draw(buildIcon, buildIconRect.getX(), buildIconRect.getY(), buildIconRect.getWidth(), buildIconRect.getHeight());
         //batch.draw(in, 50, 50, 100, 50);
         batch.end();
         if (numRooms != numWaterP + numLivingQ + numPowerG + numDiner) {
