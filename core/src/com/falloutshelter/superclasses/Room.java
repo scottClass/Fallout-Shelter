@@ -22,7 +22,6 @@ public abstract class Room {
     private int maxCapacity;
     private Array<Dweller> dwellers;
     private String requiredSkill;
-    private int cost;
     private String roomName;
 
     public Room(float x, float y, float width, float height, String requiredSkill, String roomName) {
@@ -32,7 +31,6 @@ public abstract class Room {
         level = 1;
         maxCapacity = 2;
         size = 1;
-        cost = 100;
         this.requiredSkill = this.requiredSkill.toLowerCase();
         this.requiredSkill = this.requiredSkill.replaceAll(" ", "");
         this.roomName = roomName;
@@ -71,25 +69,42 @@ public abstract class Room {
     public int getSize() {
         return size;
     }
+    
+    private void upgradeSize() {
+        if(size != 3) {
+            size ++;
+            rect.width *= 2;
+        }
+    }
 
-    public void upgradeSize() {
-        size++;
-        maxCapacity += 2;
-    }
-    
-    
-    public void setBaseCost(int newCost) {
-        cost = newCost;
-    }
-    
-    public int getBaseCost() {
-        return cost;
-    }
+    /**
+     * Merge 2 rooms together.
+     * @param a room that will remain
+     * @param b room that will be destroyed and will pass all dwellers to room a
+     */
+    public void MergeRooms(Room a, Room b) {
+        //if rooms are same type of rooms
+        if(a.getRoomName().equals(b.getRoomName())) {
+            //checks that rooms are the same level
+            if(a.getLevel() == b.getLevel()) {
+                a.setMaxCapacity(a.getMaxCapacity() + 2);
+                for(Dweller d: b.getAssignedDwellers()) {
+                    a.assignDweller(d);
+                }
+                b = null;
+                a.upgradeSize();
+            }
+        }
+    }    
     
     public abstract int collectResource();
 
     public void setMaxCapacity(int cap) {
         maxCapacity = cap;
+    }
+    
+    public int getMaxCapacity () {
+        return maxCapacity;
     }
 
     public Array<Dweller> getAssignedDwellers() {

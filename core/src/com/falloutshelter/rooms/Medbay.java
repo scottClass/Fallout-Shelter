@@ -13,9 +13,8 @@ import com.falloutshelter.superclasses.Room;
  */
 public class Medbay extends Room {
 
-    public Medbay(float x, float y, float width, float height, String requiredSkill) {
+    public Medbay(float x, float y, float width, float height) {
         super(x, y, width, height, "intelligence", "medbay");
-        super.setBaseCost(400);
     }
 
     @Override

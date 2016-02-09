@@ -13,10 +13,10 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public class AssetManager {
 
-    public Texture in;
-    public Texture buildIcon;
+    public static Texture in;
+    public static Texture buildIcon;
 
-    public void Load() {
+    public static void Load() {
         in = new Texture("test.png");
         buildIcon = new Texture("build_icon.png");
     }

@@ -15,7 +15,6 @@ public class WaterPurification extends Room {
 
     public WaterPurification(float x, float y, float width, float height) {
         super(x, y, width, height, "perception", "waterpurification");
-        super.setBaseCost(100);
     }
 
     @Override

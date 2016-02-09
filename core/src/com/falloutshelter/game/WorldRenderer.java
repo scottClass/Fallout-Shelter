@@ -23,11 +23,15 @@ import com.falloutshelter.rooms.PowerGenerator;
 import com.falloutshelter.rooms.WaterPurification;
 import static com.falloutshelter.game.WorldRenderer.BuildState.DINER;
 import static com.falloutshelter.game.WorldRenderer.BuildState.LIVINGQ;
+import static com.falloutshelter.game.WorldRenderer.BuildState.MEDBAY;
 import static com.falloutshelter.game.WorldRenderer.BuildState.NOTHING;
 import static com.falloutshelter.game.WorldRenderer.BuildState.POWERG;
+import static com.falloutshelter.game.WorldRenderer.BuildState.SCIENCEL;
 import static com.falloutshelter.game.WorldRenderer.BuildState.WATERP;
 import static com.falloutshelter.game.WorldRenderer.State.BUILD;
 import static com.falloutshelter.game.WorldRenderer.State.SELECT;
+import com.falloutshelter.rooms.Medbay;
+import com.falloutshelter.rooms.ScienceLab;
 import com.falloutshelter.superclasses.Room;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -63,20 +67,25 @@ public class WorldRenderer implements Screen {
     private BuildState currentBuildState;
     private boolean buttonDown;
     private Dweller currentSelected;
-    AssetManager assetmanager = new AssetManager();
 
+    /**
+     * Selects between building mode and selecting mode
+     */
     public enum State {
 
         BUILD, SELECT,
     }
 
+    /**
+     * When state is build these are the separate states for each room type
+     */
     public enum BuildState {
 
-        DINER, POWERG, WATERP, LIVINGQ, NOTHING,
+        DINER, POWERG, WATERP, LIVINGQ, MEDBAY, SCIENCEL, NOTHING,
     }
 
     public WorldRenderer() {
-        assetmanager.Load();
+        AssetManager.Load();
         currentFirstState = SELECT;
         currentBuildState = DINER;
         currentSelected = null;
@@ -120,22 +129,25 @@ public class WorldRenderer implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        CalculateLogic(delta);
+        CalculateLogic();
 
         batch.begin();
         font.draw(batch, secondsPassed + "", 10, 20);
         for (Dweller d : dwellers) {
-            batch.draw(assetmanager.in, d.getX(), d.getY(), d.getWidth(), d.getHeight());
+            batch.draw(AssetManager.in, d.getX(), d.getY(), d.getWidth(), d.getHeight());
         }
         for (Room r : rooms) {
-            batch.draw(assetmanager.in, r.getX(), r.getY(), r.getWidth(), r.getHeight());
+            batch.draw(AssetManager.in, r.getX(), r.getY(), r.getWidth(), r.getHeight());
         }
-        batch.draw(assetmanager.buildIcon, buildIconRect.getX(), buildIconRect.getY(), buildIconRect.getWidth(), buildIconRect.getHeight());
-        batch.draw(assetmanager.in, 50, 50, 100, 50);
+        batch.draw(AssetManager.buildIcon, buildIconRect.getX(), buildIconRect.getY(), buildIconRect.getWidth(), buildIconRect.getHeight());
+        batch.draw(AssetManager.in, 50, 50, 100, 50);
         batch.end();
     }
 
-    public void CalculateLogic(float delta) {
+    /**
+     * Does necessary math and logic outside of render method
+     */
+    public void CalculateLogic() {
         secondsPassed = (System.currentTimeMillis() - startTime) / 1000;
         if (Gdx.input.isKeyJustPressed(Keys.L)) {
             //Load();
@@ -187,6 +199,16 @@ public class WorldRenderer implements Screen {
                 } else if (currentBuildState == LIVINGQ) {
                     if (getCost("livingquarters")) {
                         rooms.add(new LivingQuarters(clickX, clickY, 100, 50));
+                        numRooms++;
+                    }
+                } else if (currentBuildState == MEDBAY) {
+                    if (getCost("medbay")) {
+                        rooms.add(new Medbay(clickX, clickY, 100, 50));
+                        numRooms++;
+                    }
+                } else if (currentBuildState == SCIENCEL) {
+                    if(getCost("sciencelab")) {
+                        rooms.add(new ScienceLab (clickX, clickY, 100, 50));
                         numRooms++;
                     }
                 } else {

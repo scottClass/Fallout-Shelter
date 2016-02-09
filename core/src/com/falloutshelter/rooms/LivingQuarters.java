@@ -17,7 +17,6 @@ public class LivingQuarters extends Room {
 
     public LivingQuarters(float x, float y, float width, float height) {
         super(x, y, width, height, "charisma", "livingquaters");
-        super.setBaseCost(100);
     }
 
     @Override

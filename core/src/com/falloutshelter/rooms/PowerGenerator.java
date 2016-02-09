@@ -15,7 +15,6 @@ public class PowerGenerator extends Room {
 
     public PowerGenerator(float x, float y, float width, float height) {
         super(x, y, width, height, "strength", "powergenerator");
-        super.setBaseCost(100);
     }
 
     @Override

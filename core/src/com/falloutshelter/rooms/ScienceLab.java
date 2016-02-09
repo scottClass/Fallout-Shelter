@@ -12,9 +12,8 @@ import com.falloutshelter.superclasses.Room;
  * @author Scott
  */
 public class ScienceLab extends Room {
-    public ScienceLab(float x, float y, float width, float height, String requiredSkill) {
+    public ScienceLab(float x, float y, float width, float height) {
         super(x, y, width, height, "intelligence", "sciencelab");
-        super.setBaseCost(400);
     }
 
     @Override

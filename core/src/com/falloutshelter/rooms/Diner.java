@@ -15,7 +15,6 @@ public class Diner extends Room {
 
     public Diner(float x, float y, float width, float height) {
         super(x, y, width, height, "agility", "diner");
-        super.setBaseCost(100);
     }
 
     @Override
