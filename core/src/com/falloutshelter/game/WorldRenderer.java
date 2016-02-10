@@ -123,6 +123,10 @@ public class WorldRenderer implements Screen {
         //Load();
     }
 
+    /**
+     * Draws rooms and Dwellers in the arrayLists.
+     * @param delta 
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -133,13 +137,13 @@ public class WorldRenderer implements Screen {
         batch.begin();
         font.draw(batch, secondsPassed + "", 10, 20);
         for (Dweller d : dwellers) {
-            batch.draw(AssetManager.in, d.getX(), d.getY(), d.getWidth(), d.getHeight());
+            batch.draw(AssetManager.test, d.getX(), d.getY(), d.getWidth(), d.getHeight());
         }
         for (Room r : rooms) {
-            batch.draw(AssetManager.in, r.getX(), r.getY(), r.getWidth(), r.getHeight());
+            batch.draw(AssetManager.test, r.getX(), r.getY(), r.getWidth(), r.getHeight());
         }
         batch.draw(AssetManager.buildIcon, buildIconRect.getX(), buildIconRect.getY(), buildIconRect.getWidth(), buildIconRect.getHeight());
-        batch.draw(AssetManager.in, 50, 50, 100, 50);
+        batch.draw(AssetManager.test, 50, 50, 100, 50);
         batch.end();
     }
 
@@ -172,7 +176,7 @@ public class WorldRenderer implements Screen {
             int clickY = (Gdx.graphics.getHeight() - Gdx.input.getY());
             Rectangle rect = new Rectangle(clickX, clickY, 5, 5);
             if (currentFirstState == BUILD) {
-                if(rect.overlaps(buildIconRect)) {
+                if (rect.overlaps(buildIconRect)) {
                     currentFirstState = SELECT;
                     currentBuildState = NOTHING;
                     System.out.println(currentFirstState);
@@ -236,6 +240,13 @@ public class WorldRenderer implements Screen {
         }
     }
 
+    /**
+     * Determines what a room would cost factoring in how many others have been
+     * built.
+     *
+     * @param desiredBuild the room that is to be built
+     * @return whether or not the play can afford to build the room
+     */
     public boolean getCost(String desiredBuild) {
         if (desiredBuild.equals("diner") || desiredBuild.equals("powergenerator")
                 || desiredBuild.equals("waterpurification") || desiredBuild.equals("livingquarters")) {
@@ -293,6 +304,9 @@ public class WorldRenderer implements Screen {
     public void dispose() {
     }
 
+    /**
+     * Loads data from SaveGame.sav
+     */
     private void Load() {
         try {
             // Open file to read from, named SavedObj.sav.
@@ -326,6 +340,9 @@ public class WorldRenderer implements Screen {
         }
     }
 
+    /**
+     * Saves data to SaveGame.sav
+     */
     private void Save() {
         try {
             // Open a file to write to, named SavedObj.sav.
@@ -355,6 +372,12 @@ public class WorldRenderer implements Screen {
 
     }
 
+    /**
+     * Clears the save file (Testing purposes).
+     *
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
     private void clearSave() throws FileNotFoundException, IOException {
         FileOutputStream saveFile = new FileOutputStream("SaveGame.sav");
         saveFile.close();
