@@ -131,9 +131,9 @@ public class WorldRenderer implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        
         CalculateLogic();
-
+        
         batch.begin();
         font.draw(batch, secondsPassed + "", 10, 20);
         for (Dweller d : dwellers) {
@@ -143,7 +143,6 @@ public class WorldRenderer implements Screen {
             batch.draw(AssetManager.test, r.getX(), r.getY(), r.getWidth(), r.getHeight());
         }
         batch.draw(AssetManager.buildIcon, buildIconRect.getX(), buildIconRect.getY(), buildIconRect.getWidth(), buildIconRect.getHeight());
-        batch.draw(AssetManager.test, 50, 50, 100, 50);
         batch.end();
     }
 
@@ -155,7 +154,7 @@ public class WorldRenderer implements Screen {
         if (Gdx.input.isKeyJustPressed(Keys.L)) {
             //Load();
         } else if (Gdx.input.isKeyJustPressed(Keys.R)) {
-            dwellers.add(new Dweller(20, 20, 50, 50));
+            dwellers.add(new Dweller(20, 20, 20, 50));
             System.out.println(dwellers.get(numDwellers));
             numDwellers++;
         } else if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
@@ -211,8 +210,6 @@ public class WorldRenderer implements Screen {
                         numRooms++;
                         System.out.println(caps);
                     }
-                } else {
-                    System.out.println("No build type selected");
                 }
             } else if (currentFirstState == SELECT) {
                 if (rect.overlaps(buildIconRect)) {
