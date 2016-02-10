@@ -60,7 +60,6 @@ public class WorldRenderer implements Screen {
     private int caps;
     private BitmapFont font;
     private SpriteBatch batch;
-
     private Rectangle buildIconRect;
     private Array<Dweller> dwellers;
     private State currentFirstState;
@@ -161,14 +160,6 @@ public class WorldRenderer implements Screen {
             dwellers.add(new Dweller(20, 20, 50, 50));
             System.out.println(dwellers.get(numDwellers));
             numDwellers++;
-        } else if (Gdx.input.isKeyJustPressed(Keys.B)) {
-            if (currentFirstState == BUILD) {
-                currentFirstState = SELECT;
-                System.out.println(currentFirstState);
-            } else if (currentFirstState == SELECT) {
-                currentFirstState = BUILD;
-                System.out.println(currentFirstState);
-            }
         } else if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
             for (Dweller d : dwellers) {
                 System.out.println(d);
@@ -179,7 +170,13 @@ public class WorldRenderer implements Screen {
             buttonDown = false;
             int clickX = Gdx.input.getX();
             int clickY = (Gdx.graphics.getHeight() - Gdx.input.getY());
+            Rectangle rect = new Rectangle(clickX, clickY, 5, 5);
             if (currentFirstState == BUILD) {
+                if(rect.overlaps(buildIconRect)) {
+                    currentFirstState = SELECT;
+                    currentBuildState = NOTHING;
+                    System.out.println(currentFirstState);
+                }
                 if (currentBuildState == DINER) {
                     if (getCost("diner")) {
                         rooms.add(new Diner(clickX, clickY, 100, 50));
@@ -190,34 +187,39 @@ public class WorldRenderer implements Screen {
                     if (getCost("powergenerator")) {
                         rooms.add(new PowerGenerator(clickX, clickY, 100, 50));
                         numRooms++;
+                        System.out.println(caps);
                     }
                 } else if (currentBuildState == WATERP) {
                     if (getCost("waterpurification")) {
                         rooms.add(new WaterPurification(clickX, clickY, 100, 50));
                         numRooms++;
+                        System.out.println(caps);
                     }
                 } else if (currentBuildState == LIVINGQ) {
                     if (getCost("livingquarters")) {
                         rooms.add(new LivingQuarters(clickX, clickY, 100, 50));
                         numRooms++;
+                        System.out.println(caps);
                     }
                 } else if (currentBuildState == MEDBAY) {
                     if (getCost("medbay")) {
                         rooms.add(new Medbay(clickX, clickY, 100, 50));
                         numRooms++;
+                        System.out.println(caps);
                     }
                 } else if (currentBuildState == SCIENCEL) {
-                    if(getCost("sciencelab")) {
-                        rooms.add(new ScienceLab (clickX, clickY, 100, 50));
+                    if (getCost("sciencelab")) {
+                        rooms.add(new ScienceLab(clickX, clickY, 100, 50));
                         numRooms++;
+                        System.out.println(caps);
                     }
                 } else {
                     System.out.println("No build type selected");
                 }
             } else if (currentFirstState == SELECT) {
-                Rectangle rect = new Rectangle(clickX, clickY, 5, 5);
                 if (rect.overlaps(buildIconRect)) {
-                    System.out.println("thing");
+                    currentFirstState = BUILD;
+                    System.out.println(currentFirstState);
                 }
                 for (Dweller d : dwellers) {
                     if (rect.overlaps(d.getRect())) {
