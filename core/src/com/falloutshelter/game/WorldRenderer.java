@@ -154,12 +154,6 @@ public class WorldRenderer implements Screen {
         secondsPassed = (System.currentTimeMillis() - startTime) / 1000;
         if (Gdx.input.isKeyJustPressed(Keys.L)) {
             //Load();
-        } else if (Gdx.input.isKeyJustPressed(Keys.C)) {
-            try {
-                clearSave();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         } else if (Gdx.input.isKeyJustPressed(Keys.R)) {
             dwellers.add(new Dweller(20, 20, 50, 50));
             System.out.println(dwellers.get(numDwellers));

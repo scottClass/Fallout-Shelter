@@ -55,7 +55,7 @@ public abstract class Room {
     public int getLevel() {
         return level;
     }
-    
+
     public String getRoomName() {
         return roomName;
     }
@@ -69,41 +69,42 @@ public abstract class Room {
     public int getSize() {
         return size;
     }
-    
+
     private void upgradeSize() {
-        if(size != 3) {
-            size ++;
+        if (size != 3) {
+            size++;
             rect.width *= 2;
         }
     }
 
     /**
      * Merge 2 rooms together.
+     *
      * @param a room that will remain
      * @param b room that will be destroyed and will pass all dwellers to room a
      */
     public void MergeRooms(Room a, Room b) {
         //if rooms are same type of rooms
-        if(a.getRoomName().equals(b.getRoomName())) {
+        if (a.getRoomName().equals(b.getRoomName())) {
             //checks that rooms are the same level
-            if(a.getLevel() == b.getLevel()) {
+            if (a.getLevel() == b.getLevel()) {
                 a.setMaxCapacity(a.getMaxCapacity() + 2);
-                for(Dweller d: b.getAssignedDwellers()) {
+                for (Dweller d : b.getAssignedDwellers()) {
                     a.assignDweller(d);
                 }
                 b = null;
                 a.upgradeSize();
             }
         }
-    }    
-    
+    }
+
     public abstract int collectResource();
 
     public void setMaxCapacity(int cap) {
         maxCapacity = cap;
     }
-    
-    public int getMaxCapacity () {
+
+    public int getMaxCapacity() {
         return maxCapacity;
     }
 
@@ -115,22 +116,22 @@ public abstract class Room {
         if (dwellers.size < maxCapacity) {
             dwellers.add(d);
         } else {
-            Dweller lowestRanked = new Dweller (1, 1, 1, 1);
+            Dweller lowestRanked = new Dweller(1, 1, 1, 1);
             boolean first = true;
             for (Dweller e : dwellers) {
                 if (requiredSkill.equals("strength")) {
                     if (first) {
                         lowestRanked = e;
                     } else {
-                        if(e.getStrength() < lowestRanked.getStrength()) {
+                        if (e.getStrength() < lowestRanked.getStrength()) {
                             lowestRanked = e;
-                        } 
+                        }
                     }
                 } else if (requiredSkill.equals("perception")) {
                     if (first) {
                         lowestRanked = e;
                     } else {
-                        if(e.getPerception() < lowestRanked.getPerception()) {
+                        if (e.getPerception() < lowestRanked.getPerception()) {
                             lowestRanked = e;
                         }
                     }
@@ -138,7 +139,7 @@ public abstract class Room {
                     if (first) {
                         lowestRanked = e;
                     } else {
-                        if(e.getEndurance() < lowestRanked.getEndurance()) {
+                        if (e.getEndurance() < lowestRanked.getEndurance()) {
                             lowestRanked = e;
                         }
                     }
@@ -146,7 +147,7 @@ public abstract class Room {
                     if (first) {
                         lowestRanked = e;
                     } else {
-                        if(e.getCharisma() < lowestRanked.getCharisma()) {
+                        if (e.getCharisma() < lowestRanked.getCharisma()) {
                             lowestRanked = e;
                         }
                     }
@@ -154,7 +155,7 @@ public abstract class Room {
                     if (first) {
                         lowestRanked = e;
                     } else {
-                        if(e.getIntelligence() < lowestRanked.getIntelligence()) {
+                        if (e.getIntelligence() < lowestRanked.getIntelligence()) {
                             lowestRanked = e;
                         }
                     }
@@ -162,7 +163,7 @@ public abstract class Room {
                     if (first) {
                         lowestRanked = e;
                     } else {
-                        if(e.getAgility() < lowestRanked.getAgility()) {
+                        if (e.getAgility() < lowestRanked.getAgility()) {
                             lowestRanked = e;
                         }
                     }
@@ -170,15 +171,15 @@ public abstract class Room {
                     if (first) {
                         lowestRanked = e;
                     } else {
-                        if(e.getLuck() < lowestRanked.getLuck()) {
+                        if (e.getLuck() < lowestRanked.getLuck()) {
                             lowestRanked = e;
                         }
                     }
                 }
                 first = false;
             }
-            for(int i = 0; i < dwellers.size; i++) {
-                if(dwellers.get(i) == lowestRanked) {
+            for (int i = 0; i < dwellers.size; i++) {
+                if (dwellers.get(i) == lowestRanked) {
                     dwellers.removeIndex(i);
                     dwellers.add(d);
                 }
@@ -192,5 +193,4 @@ public abstract class Room {
         int n = rand.nextInt(max) + min;
         return n;
     }
-
 }
