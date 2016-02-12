@@ -15,9 +15,13 @@ public class AssetManager {
 
     public static Texture test;
     public static Texture buildIcon;
+    public static Texture upgradeIcon;
+    public static Texture cancelBuildIcon;
 
     public static void Load() {
         test = new Texture("test.png");
         buildIcon = new Texture("build_icon.png");
+        upgradeIcon = new Texture("upgrade_icon.png");
+        cancelBuildIcon = new Texture("cancelBuild_icon.png");
     }
 }

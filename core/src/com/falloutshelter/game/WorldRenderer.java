@@ -60,7 +60,7 @@ public class WorldRenderer implements Screen {
     private int caps;
     private BitmapFont font;
     private SpriteBatch batch;
-    private Rectangle buildIconRect;
+    private Rectangle buildIconAreaRect;
     private Array<Dweller> dwellers;
     private State currentFirstState;
     private BuildState currentBuildState;
@@ -118,7 +118,7 @@ public class WorldRenderer implements Screen {
         secondsPassed = 0;
         nextSave = secondsPassed + 10;
 
-        buildIconRect = new Rectangle(Gdx.graphics.getWidth() - 40, Gdx.graphics.getHeight() - 40, 30, 30);
+        buildIconAreaRect = new Rectangle(Gdx.graphics.getWidth() - 40, Gdx.graphics.getHeight() - 40, 30, 30);
         buttonDown = false;
         //Load();
     }
@@ -142,7 +142,12 @@ public class WorldRenderer implements Screen {
         for (Room r : rooms) {
             batch.draw(AssetManager.test, r.getX(), r.getY(), r.getWidth(), r.getHeight());
         }
-        batch.draw(AssetManager.buildIcon, buildIconRect.getX(), buildIconRect.getY(), buildIconRect.getWidth(), buildIconRect.getHeight());
+        if(currentFirstState == SELECT) {
+            batch.draw(AssetManager.buildIcon, buildIconAreaRect.getX(), buildIconAreaRect.getY(), buildIconAreaRect.getWidth(), buildIconAreaRect.getHeight());
+        } else if (currentFirstState == BUILD) {
+            batch.draw(AssetManager.cancelBuildIcon, buildIconAreaRect.getX(), buildIconAreaRect.getY(), buildIconAreaRect.getWidth(), buildIconAreaRect.getHeight());
+        }
+        
         batch.end();
     }
 
@@ -169,7 +174,7 @@ public class WorldRenderer implements Screen {
             int clickY = (Gdx.graphics.getHeight() - Gdx.input.getY());
             Rectangle rect = new Rectangle(clickX, clickY, 5, 5);
             if (currentFirstState == BUILD) {
-                if (rect.overlaps(buildIconRect)) {
+                if (rect.overlaps(buildIconAreaRect)) {
                     currentFirstState = SELECT;
                     currentBuildState = NOTHING;
                     System.out.println(currentFirstState);
@@ -212,7 +217,7 @@ public class WorldRenderer implements Screen {
                     }
                 }
             } else if (currentFirstState == SELECT) {
-                if (rect.overlaps(buildIconRect)) {
+                if (rect.overlaps(buildIconAreaRect)) {
                     currentFirstState = BUILD;
                     System.out.println(currentFirstState);
                 }
