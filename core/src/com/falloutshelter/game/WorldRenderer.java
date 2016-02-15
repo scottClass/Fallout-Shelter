@@ -60,8 +60,9 @@ public class WorldRenderer implements Screen {
     private int caps;
     private BitmapFont font;
     private SpriteBatch batch;
-    private Rectangle buildIconAreaRect;
+    private Rectangle buildIconRect;
     private Array<Dweller> dwellers;
+    private Array<Rectangle> buildSpaces;
     private State currentFirstState;
     private BuildState currentBuildState;
     private boolean buttonDown;
@@ -118,22 +119,23 @@ public class WorldRenderer implements Screen {
         secondsPassed = 0;
         nextSave = secondsPassed + 10;
 
-        buildIconAreaRect = new Rectangle(Gdx.graphics.getWidth() - 40, Gdx.graphics.getHeight() - 40, 30, 30);
+        buildIconRect = new Rectangle(Gdx.graphics.getWidth() - 40, Gdx.graphics.getHeight() - 40, 30, 30);
         buttonDown = false;
         //Load();
     }
 
     /**
      * Draws rooms and Dwellers in the arrayLists.
-     * @param delta 
+     *
+     * @param delta
      */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
+
         CalculateLogic();
-        
+
         batch.begin();
         font.draw(batch, secondsPassed + "", 10, 20);
         font.draw(batch, caps + "", 10, Gdx.graphics.getHeight() - 20);
@@ -143,12 +145,12 @@ public class WorldRenderer implements Screen {
         for (Room r : rooms) {
             batch.draw(AssetManager.test, r.getX(), r.getY(), r.getWidth(), r.getHeight());
         }
-        if(currentFirstState == SELECT) {
-            batch.draw(AssetManager.buildIcon, buildIconAreaRect.getX(), buildIconAreaRect.getY(), buildIconAreaRect.getWidth(), buildIconAreaRect.getHeight());
+        if (currentFirstState == SELECT) {
+            batch.draw(AssetManager.buildIcon, buildIconRect.getX(), buildIconRect.getY(), buildIconRect.getWidth(), buildIconRect.getHeight());
         } else if (currentFirstState == BUILD) {
-            batch.draw(AssetManager.cancelBuildIcon, buildIconAreaRect.getX(), buildIconAreaRect.getY(), buildIconAreaRect.getWidth(), buildIconAreaRect.getHeight());
+            batch.draw(AssetManager.cancelBuildIcon, buildIconRect.getX(), buildIconRect.getY(), buildIconRect.getWidth(), buildIconRect.getHeight());
         }
-        
+
         batch.end();
     }
 
@@ -175,7 +177,7 @@ public class WorldRenderer implements Screen {
             int clickY = (Gdx.graphics.getHeight() - Gdx.input.getY());
             Rectangle rect = new Rectangle(clickX, clickY, 5, 5);
             if (currentFirstState == BUILD) {
-                if (rect.overlaps(buildIconAreaRect)) {
+                if (rect.overlaps(buildIconRect)) {
                     currentFirstState = SELECT;
                     currentBuildState = NOTHING;
                     System.out.println(currentFirstState);
@@ -185,40 +187,52 @@ public class WorldRenderer implements Screen {
                         rooms.add(new Diner(clickX, clickY, 100, 50));
                         numRooms++;
                         System.out.println(caps);
+                        currentFirstState = SELECT;
+                        currentBuildState = NOTHING;
                     }
                 } else if (currentBuildState == POWERG) {
                     if (getCost("powergenerator")) {
                         rooms.add(new PowerGenerator(clickX, clickY, 100, 50));
                         numRooms++;
                         System.out.println(caps);
+                        currentFirstState = SELECT;
+                        currentBuildState = NOTHING;
                     }
                 } else if (currentBuildState == WATERP) {
                     if (getCost("waterpurification")) {
                         rooms.add(new WaterPurification(clickX, clickY, 100, 50));
                         numRooms++;
                         System.out.println(caps);
+                        currentFirstState = SELECT;
+                        currentBuildState = NOTHING;
                     }
                 } else if (currentBuildState == LIVINGQ) {
                     if (getCost("livingquarters")) {
                         rooms.add(new LivingQuarters(clickX, clickY, 100, 50));
                         numRooms++;
                         System.out.println(caps);
+                        currentFirstState = SELECT;
+                        currentBuildState = NOTHING;
                     }
                 } else if (currentBuildState == MEDBAY) {
                     if (getCost("medbay")) {
                         rooms.add(new Medbay(clickX, clickY, 100, 50));
                         numRooms++;
                         System.out.println(caps);
+                        currentFirstState = SELECT;
+                        currentBuildState = NOTHING;
                     }
                 } else if (currentBuildState == SCIENCEL) {
                     if (getCost("sciencelab")) {
                         rooms.add(new ScienceLab(clickX, clickY, 100, 50));
                         numRooms++;
                         System.out.println(caps);
+                        currentFirstState = SELECT;
+                        currentBuildState = NOTHING;
                     }
                 }
             } else if (currentFirstState == SELECT) {
-                if (rect.overlaps(buildIconAreaRect)) {
+                if (rect.overlaps(buildIconRect)) {
                     currentFirstState = BUILD;
                     System.out.println(currentFirstState);
                 }
@@ -254,6 +268,7 @@ public class WorldRenderer implements Screen {
                 }
             }
             if ((100 + (25 * n)) > caps) {
+                System.out.println("Not enough caps. Cost: " + (100 + (25 * n)));
                 return false;
             } else {
                 caps = caps - (100 + (25 * n));
@@ -267,6 +282,7 @@ public class WorldRenderer implements Screen {
                 }
             }
             if ((400 + (100 * n)) > caps) {
+                System.out.println("Not enough caps. Cost: " + (400 + (100 * n)));
                 return false;
             } else {
                 caps = caps - (400 + (100 * n));
