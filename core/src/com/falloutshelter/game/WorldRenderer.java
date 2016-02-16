@@ -196,15 +196,15 @@ public class WorldRenderer implements Screen {
                     currentBuildState = NOTHING;
                     System.out.println(currentFirstState);
                 }
-                boolean gotBuildSpace = false;
+                boolean clickedBuildSpace = false;
                 Rectangle temp = null;
                 for (Rectangle r : buildSpaces) {
                     if (rect.overlaps(r)) {
-                        gotBuildSpace = true;
+                        clickedBuildSpace = true;
                         temp = r;
                     }
                 }
-                if (gotBuildSpace) {
+                if (clickedBuildSpace) {
                     if (currentBuildState == DINER) {
                         if (getCost("diner")) {
                             rooms.add(new Diner(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
