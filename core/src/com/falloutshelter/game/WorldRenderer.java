@@ -210,7 +210,6 @@ public class WorldRenderer implements Screen {
                         if (getCost("diner")) {
                             rooms.add(new Diner(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
                             numRooms++;
-                            System.out.println(caps);
                             currentFirstState = SELECT;
                             currentBuildState = NOTHING;
                         }
@@ -218,7 +217,6 @@ public class WorldRenderer implements Screen {
                         if (getCost("powergenerator")) {
                             rooms.add(new PowerGenerator(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
                             numRooms++;
-                            System.out.println(caps);
                             currentFirstState = SELECT;
                             currentBuildState = NOTHING;
                         }
@@ -226,7 +224,6 @@ public class WorldRenderer implements Screen {
                         if (getCost("waterpurification")) {
                             rooms.add(new WaterPurification(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
                             numRooms++;
-                            System.out.println(caps);
                             currentFirstState = SELECT;
                             currentBuildState = NOTHING;
                         }
@@ -234,7 +231,6 @@ public class WorldRenderer implements Screen {
                         if (getCost("livingquarters")) {
                             rooms.add(new LivingQuarters(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
                             numRooms++;
-                            System.out.println(caps);
                             currentFirstState = SELECT;
                             currentBuildState = NOTHING;
                         }
@@ -242,7 +238,6 @@ public class WorldRenderer implements Screen {
                         if (getCost("medbay")) {
                             rooms.add(new Medbay(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
                             numRooms++;
-                            System.out.println(caps);
                             currentFirstState = SELECT;
                             currentBuildState = NOTHING;
                         }
@@ -250,7 +245,6 @@ public class WorldRenderer implements Screen {
                         if (getCost("sciencelab")) {
                             rooms.add(new ScienceLab(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
                             numRooms++;
-                            System.out.println(caps);
                             currentFirstState = SELECT;
                             currentBuildState = NOTHING;
                         }
