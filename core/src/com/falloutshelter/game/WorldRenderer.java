@@ -80,7 +80,7 @@ public class WorldRenderer implements Screen {
      */
     public enum BuildState {
 
-        DINER, POWERG, WATERP, LIVINGQ, MEDBAY, SCIENCEL, NOTHING,
+        DINER, POWERG, WATERP, LIVINGQ, MEDBAY, SCIENCEL, ELEVATOR, NOTHING,
     }
 
     public WorldRenderer() {
