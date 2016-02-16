@@ -39,6 +39,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -165,6 +167,12 @@ public class WorldRenderer implements Screen {
             dwellers.add(new Dweller(20, 20, 20, 50));
             System.out.println(dwellers.get(numDwellers));
             numDwellers++;
+        } else if(Gdx.input.isKeyJustPressed(Keys.C)) {
+            try {
+                clearSave();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
             for (Dweller d : dwellers) {
                 System.out.println(d);
@@ -295,26 +303,32 @@ public class WorldRenderer implements Screen {
 
     @Override
     public void show() {
+        
     }
 
     @Override
     public void resize(int width, int height) {
+        
     }
 
     @Override
     public void pause() {
+        
     }
 
     @Override
     public void resume() {
+        
     }
 
     @Override
     public void hide() {
+        
     }
 
     @Override
     public void dispose() {
+        
     }
 
     /**
