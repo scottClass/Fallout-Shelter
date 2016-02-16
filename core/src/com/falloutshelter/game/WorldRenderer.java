@@ -55,7 +55,6 @@ public class WorldRenderer implements Screen {
     private int numDwellers, maxDwellers;
     private int radAway, maxRadAway;
     private int stimpak, maxStimpak;
-    private int numRooms;
     private int caps;
     private BitmapFont font;
     private SpriteBatch batch;
@@ -95,16 +94,14 @@ public class WorldRenderer implements Screen {
         maxStimpak = 20;
 
         numDwellers = 0;
-        numRooms = 0;
 
         dwellers = new Array<Dweller>();
         rooms = new Array<Room>();
         buildSpaces = new Array<Rectangle>();
 
+        buildSpaces.add(new Rectangle(200, Gdx.graphics.getHeight() - 100, 100, 50));
+
         startTime = System.currentTimeMillis();
-
-        buildSpaces.add(new Rectangle(50, 50, 100, 50));
-
 
         energy = 50;
         food = 50;
@@ -205,47 +202,104 @@ public class WorldRenderer implements Screen {
                     }
                 }
                 if (clickedBuildSpace) {
+                    boolean builtRoom = false;
                     if (currentBuildState == DINER) {
                         if (getCost("diner")) {
+                            builtRoom = true;
                             rooms.add(new Diner(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
-                            numRooms++;
+                            if (temp.getX() + 100 != Gdx.graphics.getWidth()) {
+                                buildSpaces.add(new Rectangle(temp.getX() + 100, temp.getY(), temp.getWidth(), temp.getHeight()));
+                            }
+                            if (temp.getX() - 100 != 0) {
+                                buildSpaces.add(new Rectangle(temp.getX() - 100, temp.getY(), temp.getWidth(), temp.getHeight()));
+                            }
                             currentFirstState = SELECT;
                             currentBuildState = NOTHING;
                         }
                     } else if (currentBuildState == POWERG) {
                         if (getCost("powergenerator")) {
+                            builtRoom = true;
                             rooms.add(new PowerGenerator(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
-                            numRooms++;
+                            rooms.add(new Diner(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
+                            if (temp.getX() + 100 != Gdx.graphics.getWidth()) {
+                                buildSpaces.add(new Rectangle(temp.getX() + 100, temp.getY(), temp.getWidth(), temp.getHeight()));
+                            }
+                            if (temp.getX() - 100 != 0) {
+                                buildSpaces.add(new Rectangle(temp.getX() - 100, temp.getY(), temp.getWidth(), temp.getHeight()));
+                            }
                             currentFirstState = SELECT;
                             currentBuildState = NOTHING;
                         }
                     } else if (currentBuildState == WATERP) {
                         if (getCost("waterpurification")) {
+                            builtRoom = true;
                             rooms.add(new WaterPurification(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
-                            numRooms++;
+                            rooms.add(new Diner(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
+                            if (temp.getX() + 100 != Gdx.graphics.getWidth()) {
+                                buildSpaces.add(new Rectangle(temp.getX() + 100, temp.getY(), temp.getWidth(), temp.getHeight()));
+                            }
+                            if (temp.getX() - 100 != 0) {
+                                buildSpaces.add(new Rectangle(temp.getX() - 100, temp.getY(), temp.getWidth(), temp.getHeight()));
+                            }
                             currentFirstState = SELECT;
                             currentBuildState = NOTHING;
                         }
                     } else if (currentBuildState == LIVINGQ) {
                         if (getCost("livingquarters")) {
+                            builtRoom = true;
                             rooms.add(new LivingQuarters(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
-                            numRooms++;
+                            rooms.add(new Diner(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
+                            if (temp.getX() + 100 != Gdx.graphics.getWidth()) {
+                                buildSpaces.add(new Rectangle(temp.getX() + 100, temp.getY(), temp.getWidth(), temp.getHeight()));
+                            }
+                            if (temp.getX() - 100 != 0) {
+                                buildSpaces.add(new Rectangle(temp.getX() - 100, temp.getY(), temp.getWidth(), temp.getHeight()));
+                            }
                             currentFirstState = SELECT;
                             currentBuildState = NOTHING;
                         }
                     } else if (currentBuildState == MEDBAY) {
                         if (getCost("medbay")) {
+                            builtRoom = true;
                             rooms.add(new Medbay(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
-                            numRooms++;
+                            rooms.add(new Diner(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
+                            if (temp.getX() + 100 != Gdx.graphics.getWidth()) {
+                                buildSpaces.add(new Rectangle(temp.getX() + 100, temp.getY(), temp.getWidth(), temp.getHeight()));
+                            }
+                            if (temp.getX() - 100 != 0) {
+                                buildSpaces.add(new Rectangle(temp.getX() - 100, temp.getY(), temp.getWidth(), temp.getHeight()));
+                            }
                             currentFirstState = SELECT;
                             currentBuildState = NOTHING;
                         }
                     } else if (currentBuildState == SCIENCEL) {
                         if (getCost("sciencelab")) {
+                            builtRoom = true;
                             rooms.add(new ScienceLab(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
-                            numRooms++;
+                            rooms.add(new Diner(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
+                            if (temp.getX() + 100 != Gdx.graphics.getWidth()) {
+                                buildSpaces.add(new Rectangle(temp.getX() + 100, temp.getY(), temp.getWidth(), temp.getHeight()));
+                            }
+                            if (temp.getX() - 100 != 0) {
+                                buildSpaces.add(new Rectangle(temp.getX() - 100, temp.getY(), temp.getWidth(), temp.getHeight()));
+                            }
                             currentFirstState = SELECT;
                             currentBuildState = NOTHING;
+                        }
+                    }
+                    //Removes buildSpace after building a room
+                    if (builtRoom) {
+                        for (Rectangle r : buildSpaces) {
+                            if (r == temp) {
+                                buildSpaces.removeValue(r, true);
+                            }
+                        }
+                        for (Rectangle r : buildSpaces) {
+                            for (Room d : rooms) {
+                                if (d.getRect().overlaps(r)) {
+                                    buildSpaces.removeValue(r, true);
+                                }
+                            }
                         }
                     }
                 }

@@ -69,6 +69,10 @@ public abstract class Room {
     public int getSize() {
         return size;
     }
+    
+    public Rectangle getRect() {
+        return rect;
+    }
 
     private void upgradeSize() {
         if (size != 3) {
