@@ -141,7 +141,8 @@ public class WorldRenderer implements Screen {
 
         batch.begin();
         font.draw(batch, secondsPassed + "", 10, 20);
-        font.draw(batch, caps + "", 10, Gdx.graphics.getHeight() - 10);
+        font.draw(batch, caps + "", 35, Gdx.graphics.getHeight() - 15);
+        batch.draw(AssetManager.capIcon, 10, Gdx.graphics.getHeight() - 30, 20, 20);
         for (Dweller d : dwellers) {
             batch.draw(AssetManager.test, d.getX(), d.getY(), d.getWidth(), d.getHeight());
         }
