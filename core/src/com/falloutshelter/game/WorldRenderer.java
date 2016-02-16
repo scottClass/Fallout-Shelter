@@ -65,6 +65,7 @@ public class WorldRenderer implements Screen {
     private BuildState currentBuildState;
     private boolean buttonDown;
     private Dweller currentSelected;
+    private Room currentRoomSelected;
 
     /**
      * Selects between building mode and selecting mode
@@ -87,6 +88,7 @@ public class WorldRenderer implements Screen {
         currentFirstState = SELECT;
         currentBuildState = DINER;
         currentSelected = null;
+        currentRoomSelected = null;
 
         radAway = 0;
         maxRadAway = 15;
@@ -311,7 +313,12 @@ public class WorldRenderer implements Screen {
                 for (Dweller d : dwellers) {
                     if (rect.overlaps(d.getRect())) {
                         currentSelected = d;
+                        currentRoomSelected = null;
                     }
+                }
+                for(Room r: rooms) {
+                    currentRoomSelected = r;
+                    currentSelected = null;
                 }
             }
 
