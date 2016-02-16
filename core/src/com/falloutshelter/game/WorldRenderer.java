@@ -11,7 +11,6 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -39,8 +38,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -102,8 +99,12 @@ public class WorldRenderer implements Screen {
 
         dwellers = new Array<Dweller>();
         rooms = new Array<Room>();
+        buildSpaces = new Array<Rectangle>();
 
         startTime = System.currentTimeMillis();
+
+        buildSpaces.add(new Rectangle(50, 50, 100, 50));
+
 
         energy = 50;
         food = 50;
@@ -151,6 +152,11 @@ public class WorldRenderer implements Screen {
             batch.draw(AssetManager.buildIcon, buildIconRect.getX(), buildIconRect.getY(), buildIconRect.getWidth(), buildIconRect.getHeight());
         } else if (currentFirstState == BUILD) {
             batch.draw(AssetManager.cancelBuildIcon, buildIconRect.getX(), buildIconRect.getY(), buildIconRect.getWidth(), buildIconRect.getHeight());
+            if (currentBuildState != NOTHING) {
+                for (Rectangle r : buildSpaces) {
+                    batch.draw(AssetManager.buildSpace, r.getX(), r.getY(), r.getWidth(), r.getHeight());
+                }
+            }
         }
 
         batch.end();
@@ -167,7 +173,7 @@ public class WorldRenderer implements Screen {
             dwellers.add(new Dweller(20, 20, 20, 50));
             System.out.println(dwellers.get(numDwellers));
             numDwellers++;
-        } else if(Gdx.input.isKeyJustPressed(Keys.C)) {
+        } else if (Gdx.input.isKeyJustPressed(Keys.C)) {
             try {
                 clearSave();
             } catch (IOException e) {
@@ -190,53 +196,63 @@ public class WorldRenderer implements Screen {
                     currentBuildState = NOTHING;
                     System.out.println(currentFirstState);
                 }
-                if (currentBuildState == DINER) {
-                    if (getCost("diner")) {
-                        rooms.add(new Diner(clickX, clickY, 100, 50));
-                        numRooms++;
-                        System.out.println(caps);
-                        currentFirstState = SELECT;
-                        currentBuildState = NOTHING;
+                boolean gotBuildSpace = false;
+                Rectangle temp = null;
+                for (Rectangle r : buildSpaces) {
+                    if (rect.overlaps(r)) {
+                        gotBuildSpace = true;
+                        temp = r;
                     }
-                } else if (currentBuildState == POWERG) {
-                    if (getCost("powergenerator")) {
-                        rooms.add(new PowerGenerator(clickX, clickY, 100, 50));
-                        numRooms++;
-                        System.out.println(caps);
-                        currentFirstState = SELECT;
-                        currentBuildState = NOTHING;
-                    }
-                } else if (currentBuildState == WATERP) {
-                    if (getCost("waterpurification")) {
-                        rooms.add(new WaterPurification(clickX, clickY, 100, 50));
-                        numRooms++;
-                        System.out.println(caps);
-                        currentFirstState = SELECT;
-                        currentBuildState = NOTHING;
-                    }
-                } else if (currentBuildState == LIVINGQ) {
-                    if (getCost("livingquarters")) {
-                        rooms.add(new LivingQuarters(clickX, clickY, 100, 50));
-                        numRooms++;
-                        System.out.println(caps);
-                        currentFirstState = SELECT;
-                        currentBuildState = NOTHING;
-                    }
-                } else if (currentBuildState == MEDBAY) {
-                    if (getCost("medbay")) {
-                        rooms.add(new Medbay(clickX, clickY, 100, 50));
-                        numRooms++;
-                        System.out.println(caps);
-                        currentFirstState = SELECT;
-                        currentBuildState = NOTHING;
-                    }
-                } else if (currentBuildState == SCIENCEL) {
-                    if (getCost("sciencelab")) {
-                        rooms.add(new ScienceLab(clickX, clickY, 100, 50));
-                        numRooms++;
-                        System.out.println(caps);
-                        currentFirstState = SELECT;
-                        currentBuildState = NOTHING;
+                }
+                if (gotBuildSpace) {
+                    if (currentBuildState == DINER) {
+                        if (getCost("diner")) {
+                            rooms.add(new Diner(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
+                            numRooms++;
+                            System.out.println(caps);
+                            currentFirstState = SELECT;
+                            currentBuildState = NOTHING;
+                        }
+                    } else if (currentBuildState == POWERG) {
+                        if (getCost("powergenerator")) {
+                            rooms.add(new PowerGenerator(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
+                            numRooms++;
+                            System.out.println(caps);
+                            currentFirstState = SELECT;
+                            currentBuildState = NOTHING;
+                        }
+                    } else if (currentBuildState == WATERP) {
+                        if (getCost("waterpurification")) {
+                            rooms.add(new WaterPurification(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
+                            numRooms++;
+                            System.out.println(caps);
+                            currentFirstState = SELECT;
+                            currentBuildState = NOTHING;
+                        }
+                    } else if (currentBuildState == LIVINGQ) {
+                        if (getCost("livingquarters")) {
+                            rooms.add(new LivingQuarters(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
+                            numRooms++;
+                            System.out.println(caps);
+                            currentFirstState = SELECT;
+                            currentBuildState = NOTHING;
+                        }
+                    } else if (currentBuildState == MEDBAY) {
+                        if (getCost("medbay")) {
+                            rooms.add(new Medbay(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
+                            numRooms++;
+                            System.out.println(caps);
+                            currentFirstState = SELECT;
+                            currentBuildState = NOTHING;
+                        }
+                    } else if (currentBuildState == SCIENCEL) {
+                        if (getCost("sciencelab")) {
+                            rooms.add(new ScienceLab(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
+                            numRooms++;
+                            System.out.println(caps);
+                            currentFirstState = SELECT;
+                            currentBuildState = NOTHING;
+                        }
                     }
                 }
             } else if (currentFirstState == SELECT) {
@@ -250,6 +266,7 @@ public class WorldRenderer implements Screen {
                     }
                 }
             }
+
         }
 
         if (nextSave == secondsPassed) {
@@ -303,32 +320,26 @@ public class WorldRenderer implements Screen {
 
     @Override
     public void show() {
-        
     }
 
     @Override
     public void resize(int width, int height) {
-        
     }
 
     @Override
     public void pause() {
-        
     }
 
     @Override
     public void resume() {
-        
     }
 
     @Override
     public void hide() {
-        
     }
 
     @Override
     public void dispose() {
-        
     }
 
     /**
