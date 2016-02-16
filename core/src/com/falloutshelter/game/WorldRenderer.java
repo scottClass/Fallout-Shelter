@@ -159,7 +159,6 @@ public class WorldRenderer implements Screen {
                 }
             }
         }
-
         batch.end();
     }
 
