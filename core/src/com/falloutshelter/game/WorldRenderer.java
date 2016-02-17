@@ -61,6 +61,7 @@ public class WorldRenderer implements Screen {
     private Rectangle buildIconRect;
     private Array<Dweller> dwellers;
     private Array<Rectangle> buildSpaces;
+    private Array<Rectangle> selectBuildRects;
     private State currentFirstState;
     private BuildState currentBuildState;
     private boolean buttonDown;
@@ -100,8 +101,9 @@ public class WorldRenderer implements Screen {
         dwellers = new Array<Dweller>();
         rooms = new Array<Room>();
         buildSpaces = new Array<Rectangle>();
+        selectBuildRects = new Array<Rectangle>();
 
-        buildSpaces.add(new Rectangle(200, Gdx.graphics.getHeight() - 100, 100, 50));
+        buildSpaces.add(new Rectangle(100, Gdx.graphics.getHeight() - 100, 100, 50));
 
         startTime = System.currentTimeMillis();
 
@@ -296,6 +298,7 @@ public class WorldRenderer implements Screen {
                                 buildSpaces.removeValue(r, true);
                             }
                         }
+                        //checks if any of the build spaces are in an area that already has a room
                         for (Rectangle r : buildSpaces) {
                             for (Room d : rooms) {
                                 if (d.getRect().overlaps(r)) {
