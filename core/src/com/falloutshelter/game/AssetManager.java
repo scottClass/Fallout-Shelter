@@ -19,6 +19,12 @@ public class AssetManager {
     public static Texture cancelBuildIcon;
     public static Texture buildSpace;
     public static Texture capIcon;
+    public static Texture livingQuarters;
+    public static Texture diner;
+    public static Texture powerGenerator;
+    public static Texture waterPurification;
+    public static Texture scienceLab;
+    public static Texture medbay;
 
     public static void Load() {
         test = new Texture("test.png");
