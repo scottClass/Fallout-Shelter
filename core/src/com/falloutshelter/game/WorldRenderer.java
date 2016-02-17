@@ -104,7 +104,7 @@ public class WorldRenderer implements Screen {
         selectBuildRect = new Array<Rectangle>();
 
         for (int i = 0; i < 6; i++) {
-            selectBuildRect.add(new Rectangle((i * 133), 200, 133, 200));
+            selectBuildRect.add(new Rectangle((i * 133), Gdx.graphics.getHeight() - 400, 133, 200));
         }
 
         buildSpaces.add(new Rectangle(100, Gdx.graphics.getHeight() - 100, 100, 50));
@@ -181,7 +181,7 @@ public class WorldRenderer implements Screen {
                 int i = 0;
                 for (Rectangle r : selectBuildRect) {
                     batch.draw(AssetManager.buildSpace, r.getX(), r.getY(), r.getWidth(), r.getHeight());
-                    switch(i) {
+                    switch (i) {
                         case 0:
                             font.draw(batch, "Living \nQuarters", (r.getX() + (r.getWidth() / 2)) - 25, r.getY() + (r.getHeight() / 2));
                             break;
@@ -195,7 +195,7 @@ public class WorldRenderer implements Screen {
                             font.draw(batch, "Water \nPurification", (r.getX() + (r.getWidth() / 2)) - 25, r.getY() + (r.getHeight() / 2));
                             break;
                         case 4:
-                            font.draw(batch, "Science \nLab",(r.getX() + (r.getWidth() / 2)) - 25, r.getY() + (r.getHeight() / 2));
+                            font.draw(batch, "Science \nLab", (r.getX() + (r.getWidth() / 2)) - 25, r.getY() + (r.getHeight() / 2));
                             break;
                         case 5:
                             font.draw(batch, "Medbay", (r.getX() + (r.getWidth() / 2)) - 25, r.getY() + (r.getHeight() / 2));
@@ -302,7 +302,6 @@ public class WorldRenderer implements Screen {
                             if (getCost("powergenerator")) {
                                 builtRoom = true;
                                 rooms.add(new PowerGenerator(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
-                                rooms.add(new Diner(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
                                 if (temp.getX() + 100 != Gdx.graphics.getWidth()) {
                                     buildSpaces.add(new Rectangle(temp.getX() + 100, temp.getY(), temp.getWidth(), temp.getHeight()));
                                 }
@@ -316,7 +315,6 @@ public class WorldRenderer implements Screen {
                             if (getCost("waterpurification")) {
                                 builtRoom = true;
                                 rooms.add(new WaterPurification(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
-                                rooms.add(new Diner(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
                                 if (temp.getX() + 100 != Gdx.graphics.getWidth()) {
                                     buildSpaces.add(new Rectangle(temp.getX() + 100, temp.getY(), temp.getWidth(), temp.getHeight()));
                                 }
@@ -330,7 +328,6 @@ public class WorldRenderer implements Screen {
                             if (getCost("livingquarters")) {
                                 builtRoom = true;
                                 rooms.add(new LivingQuarters(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
-                                rooms.add(new Diner(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
                                 if (temp.getX() + 100 != Gdx.graphics.getWidth()) {
                                     buildSpaces.add(new Rectangle(temp.getX() + 100, temp.getY(), temp.getWidth(), temp.getHeight()));
                                 }
@@ -344,7 +341,6 @@ public class WorldRenderer implements Screen {
                             if (getCost("medbay")) {
                                 builtRoom = true;
                                 rooms.add(new Medbay(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
-                                rooms.add(new Diner(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
                                 if (temp.getX() + 100 != Gdx.graphics.getWidth()) {
                                     buildSpaces.add(new Rectangle(temp.getX() + 100, temp.getY(), temp.getWidth(), temp.getHeight()));
                                 }
@@ -358,7 +354,6 @@ public class WorldRenderer implements Screen {
                             if (getCost("sciencelab")) {
                                 builtRoom = true;
                                 rooms.add(new ScienceLab(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
-                                rooms.add(new Diner(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
                                 if (temp.getX() + 100 != Gdx.graphics.getWidth()) {
                                     buildSpaces.add(new Rectangle(temp.getX() + 100, temp.getY(), temp.getWidth(), temp.getHeight()));
                                 }
