@@ -64,7 +64,7 @@ public class WorldRenderer implements Screen {
     private Rectangle buildIconRect;
     private State currentFirstState;
     private BuildState currentBuildState;
-    private boolean buttonDown;
+    private boolean buttonPressed;
     private Dweller currentDwellerSelected;
     private Room currentRoomSelected;
 
@@ -128,7 +128,7 @@ public class WorldRenderer implements Screen {
         nextSave = secondsPassed + 10;
 
         buildIconRect = new Rectangle(Gdx.graphics.getWidth() - 40, Gdx.graphics.getHeight() - 40, 30, 30);
-        buttonDown = false;
+        buttonPressed = false;
         //Load();
     }
 
@@ -220,19 +220,22 @@ public class WorldRenderer implements Screen {
             System.out.println(dwellers.get(numDwellers));
             numDwellers++;
         } else if (Gdx.input.isKeyJustPressed(Keys.C)) {
-            try {
-                clearSave();
-            } catch (IOException e) {
-                e.printStackTrace();
+//            try {
+//                clearSave();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+            for (Room r : rooms) {
+                System.out.println(r.getRoomName());
             }
         } else if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
             for (Dweller d : dwellers) {
                 System.out.println(d);
             }
         } else if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-            buttonDown = true;
-        } else if (!Gdx.input.isButtonPressed(Input.Buttons.LEFT) && buttonDown) {
-            buttonDown = false;
+            buttonPressed = true;
+        } else if (!Gdx.input.isButtonPressed(Input.Buttons.LEFT) && buttonPressed) {
+            buttonPressed = false;
             int clickX = Gdx.input.getX();
             int clickY = (Gdx.graphics.getHeight() - Gdx.input.getY());
             Rectangle rect = new Rectangle(clickX, clickY, 5, 5);
@@ -241,14 +244,6 @@ public class WorldRenderer implements Screen {
                     currentFirstState = SELECT;
                     currentBuildState = NOTHING;
                     System.out.println(currentFirstState);
-                }
-                boolean clickedBuildSpace = false;
-                Rectangle temp = null;
-                for (Rectangle r : buildSpaces) {
-                    if (rect.overlaps(r)) {
-                        clickedBuildSpace = true;
-                        temp = r;
-                    }
                 }
                 if (currentBuildState == NOTHING) {
                     for (Rectangle r : selectBuildRect) {
@@ -283,6 +278,14 @@ public class WorldRenderer implements Screen {
                         }
                     }
                 } else {
+                    boolean clickedBuildSpace = false;
+                    Rectangle temp = null;
+                    for (Rectangle r : buildSpaces) {
+                        if (rect.overlaps(r)) {
+                            clickedBuildSpace = true;
+                            temp = r;
+                        }
+                    }
                     if (clickedBuildSpace) {
                         boolean builtRoom = false;
                         if (currentBuildState == DINER) {
