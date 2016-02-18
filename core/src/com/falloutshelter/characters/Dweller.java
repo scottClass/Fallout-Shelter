@@ -19,6 +19,7 @@ public class Dweller extends Entity {
     private int[] specialArray;
     private boolean isFemale;
     private boolean isPregnant;
+    private boolean isChild;
     private String firstName;
     private String lastName;
     private Room assignedRoom;
@@ -78,6 +79,19 @@ public class Dweller extends Entity {
     
     public void getPregnant() {
         isPregnant = true;
+    }
+    
+    public Dweller deliverChild() {
+        return new Dweller(super.getX(), super.getY(), super.getWidth(), super.getHeight() / 2);
+    }
+    
+    /**
+     * Gives if dweller is child or not.
+     * 
+     * @return returns the isChild boolean
+     */
+    public boolean getAge() {
+        return isChild;
     }
 
     public String getFirstName() {

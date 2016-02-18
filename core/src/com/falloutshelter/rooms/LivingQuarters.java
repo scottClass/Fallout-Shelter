@@ -44,7 +44,7 @@ public class LivingQuarters extends Room {
                 }
             }
         }
-        if (male != null && female != null) {
+        if (male != null && female != null && !female.getAge() && !male.getAge()) {
             female.getPregnant();
         }
         return 0;
