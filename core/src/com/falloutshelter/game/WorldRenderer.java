@@ -116,7 +116,7 @@ public class WorldRenderer implements Screen {
     }
 
     /**
-     * Draws rooms and Dwellers in the arrayLists.
+     * Draws rooms and Dwellers in the vaults arrayLists.
      *
      * @param delta
      */
@@ -277,7 +277,6 @@ public class WorldRenderer implements Screen {
                                     }
                                 }
                             }
-                            System.out.println("worked");
                             System.out.println(currentBuildState);
                             break;
                         }
@@ -418,8 +417,7 @@ public class WorldRenderer implements Screen {
                             }
                         } else {
                             currentRoomSelected = r;
-                            System.out.println(currentRoomSelected.getRoomName());
-                            System.out.println("Selected a room");
+                            System.out.println("Selected a " + currentRoomSelected.getRoomName());
                             currentDwellerSelected = null;
                         }
                         hasClicked = true;
