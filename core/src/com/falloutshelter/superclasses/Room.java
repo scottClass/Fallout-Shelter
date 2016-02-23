@@ -36,6 +36,9 @@ public abstract class Room {
         this.requiredSkill = this.requiredSkill.toLowerCase();
         this.requiredSkill = this.requiredSkill.replaceAll(" ", "");
         this.roomName = roomName;
+        if (!this.roomName.equals("livingquaters")) {
+            toCollect = 60;
+        }
         canCollect = false;
     }
 
@@ -58,15 +61,19 @@ public abstract class Room {
     public int getLevel() {
         return level;
     }
-    
+
     public int getToCollect() {
         return toCollect;
     }
-    
+
+    public void addToCollect(int t) {
+        toCollect += t;
+    }
+
     public void ChangeCanCollect() {
         canCollect = true;
     }
-    
+
     public boolean getCanCollect() {
         return canCollect;
     }
@@ -84,7 +91,7 @@ public abstract class Room {
     public int getSize() {
         return size;
     }
-    
+
     public Rectangle getRect() {
         return rect;
     }

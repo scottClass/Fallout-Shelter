@@ -200,16 +200,22 @@ public class WorldRenderer implements Screen {
             if (r.getToCollect() <= secondsPassed) {
                 if (r.getRoomName().equals("diner")) {
                     r.ChangeCanCollect();
+                    r.addToCollect(r.getToCollect());
                 } else if (r.getRoomName().equals("medbay")) {
                     r.ChangeCanCollect();
+                    r.addToCollect(r.getToCollect());
                 } else if (r.getRoomName().equals("livingquaters")) {
                     r.collectResource();
+                    r.addToCollect(r.getToCollect());
                 } else if (r.getRoomName().equals("powergenerator")) {
                     r.ChangeCanCollect();
+                    r.addToCollect(r.getToCollect());
                 } else if (r.getRoomName().equals("sciencelab")) {
                     r.ChangeCanCollect();
+                    r.addToCollect(r.getToCollect());
                 } else if (r.getRoomName().equals("waterpurification")) {
                     r.ChangeCanCollect();
+                    r.addToCollect(r.getToCollect());
                 }
             }
         }
@@ -395,25 +401,33 @@ public class WorldRenderer implements Screen {
                         currentRoomSelected = null;
                     }
                 }
+                boolean hasClicked = false;
                 for (Room r : vault.getRooms()) {
-                    if (r.getCanCollect()) {
-                        if (r.getRoomName().equals("diner")) {
-                            vault.addFood(r.collectResource());
-                        } else if (r.getRoomName().equals("medbay")) {
-                            vault.addRadaway(r.collectResource());
-                        } else if (r.getRoomName().equals("powergenerator")) {
-                            vault.addEnergy(r.collectResource());
-                        } else if (r.getRoomName().equals("sciencelab")) {
-                            vault.addStimpak(r.collectResource());
-                        } else if (r.getRoomName().equals("waterpurification")) {
-                            vault.addWater(r.collectResource());
+                    if (rect.overlaps(r.getRect())) {
+                        if (r.getCanCollect()) {
+                            if (r.getRoomName().equals("diner")) {
+                                vault.addFood(r.collectResource());
+                            } else if (r.getRoomName().equals("medbay")) {
+                                vault.addRadaway(r.collectResource());
+                            } else if (r.getRoomName().equals("powergenerator")) {
+                                vault.addEnergy(r.collectResource());
+                            } else if (r.getRoomName().equals("sciencelab")) {
+                                vault.addStimpak(r.collectResource());
+                            } else if (r.getRoomName().equals("waterpurification")) {
+                                vault.addWater(r.collectResource());
+                            }
+                        } else {
+                            currentRoomSelected = r;
+                            System.out.println(currentRoomSelected.getRoomName());
+                            System.out.println("Selected a room");
+                            currentDwellerSelected = null;
                         }
-                    } else {
-                        currentRoomSelected = r;
-                        System.out.println(currentRoomSelected.getRoomName());
-                        System.out.println("Selected a room");
-                        currentDwellerSelected = null;
+                        hasClicked = true;
                     }
+                }
+                if(!hasClicked) {
+                    currentRoomSelected = null;
+                    System.out.println("Deselected");
                 }
             }
 
