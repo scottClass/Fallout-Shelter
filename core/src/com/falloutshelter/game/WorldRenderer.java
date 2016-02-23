@@ -81,7 +81,7 @@ public class WorldRenderer implements Screen {
     public WorldRenderer() {
         AssetManager.Load();
 
-        vault = new Vault();
+        vault = new Vault("Vault 101");
 
         currentFirstState = SELECT;
         currentBuildState = NOTHING;

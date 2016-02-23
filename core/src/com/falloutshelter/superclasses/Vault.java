@@ -14,6 +14,7 @@ import java.io.Serializable;
  */
 public class Vault implements Serializable {
 
+    private String vaultName;
     private Array<Room> rooms;
     private Array<Dweller> dwellers;
     private Array<Integer> toCollect;
@@ -24,7 +25,8 @@ public class Vault implements Serializable {
     private int radAway, maxRadAway;
     private int stimpak, maxStimpak;
 
-    public Vault() {
+    public Vault(String name) {
+        vaultName = name;
         rooms = new Array<Room>();
         dwellers = new Array<Dweller>();
         radAway = 0;
