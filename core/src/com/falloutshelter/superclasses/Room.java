@@ -23,6 +23,8 @@ public abstract class Room {
     private Array<Dweller> dwellers;
     private String requiredSkill;
     private String roomName;
+    private int toCollect;
+    private boolean canCollect;
 
     public Room(float x, float y, float width, float height, String requiredSkill, String roomName) {
         rect = new Rectangle(x, y, width, height);
@@ -34,6 +36,7 @@ public abstract class Room {
         this.requiredSkill = this.requiredSkill.toLowerCase();
         this.requiredSkill = this.requiredSkill.replaceAll(" ", "");
         this.roomName = roomName;
+        canCollect = false;
     }
 
     public float getX() {
@@ -54,6 +57,18 @@ public abstract class Room {
 
     public int getLevel() {
         return level;
+    }
+    
+    public int getToCollect() {
+        return toCollect;
+    }
+    
+    public void ChangeCanCollect() {
+        canCollect = true;
+    }
+    
+    public boolean getCanCollect() {
+        return canCollect;
     }
 
     public String getRoomName() {

@@ -32,6 +32,7 @@ import static com.falloutshelter.game.WorldRenderer.State.SELECT;
 import com.falloutshelter.rooms.Medbay;
 import com.falloutshelter.rooms.ScienceLab;
 import com.falloutshelter.superclasses.Room;
+import com.falloutshelter.superclasses.Vault;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -45,19 +46,12 @@ import java.io.ObjectOutputStream;
  */
 public class WorldRenderer implements Screen {
 
-    private Array<Room> rooms;
-    private Array<Dweller> dwellers;
+    private Vault vault;
     private Array<Rectangle> buildSpaces;
     private Array<Rectangle> selectBuildRect;
     private long startTime;
     private long secondsPassed;
     private long nextSave;
-    private int energy, maxEnergy;
-    private int food, maxFood;
-    private int water, maxWater;
-    private int numDwellers, maxDwellers;
-    private int radAway, maxRadAway;
-    private int stimpak, maxStimpak;
     private int caps;
     private BitmapFont font;
     private SpriteBatch batch;
@@ -86,20 +80,16 @@ public class WorldRenderer implements Screen {
 
     public WorldRenderer() {
         AssetManager.Load();
+
+        vault = new Vault();
+
         currentFirstState = SELECT;
         currentBuildState = NOTHING;
         currentDwellerSelected = null;
         currentRoomSelected = null;
 
-        radAway = 0;
-        maxRadAway = 15;
-        stimpak = 0;
-        maxStimpak = 20;
+        caps = 500;
 
-        numDwellers = 0;
-
-        dwellers = new Array<Dweller>();
-        rooms = new Array<Room>();
         buildSpaces = new Array<Rectangle>();
         selectBuildRect = new Array<Rectangle>();
 
@@ -111,14 +101,7 @@ public class WorldRenderer implements Screen {
 
         startTime = System.currentTimeMillis();
 
-        energy = 50;
-        food = 50;
-        water = 50;
-        maxEnergy = 100;
-        maxFood = 100;
-        maxWater = 100;
-        caps = 500;
-        maxDwellers = 20;
+
 
         font = new BitmapFont();
         batch = new SpriteBatch();
@@ -148,10 +131,10 @@ public class WorldRenderer implements Screen {
         font.draw(batch, secondsPassed + "", 10, 20);
         font.draw(batch, caps + "", 35, Gdx.graphics.getHeight() - 15);
         batch.draw(AssetManager.capIcon, 10, Gdx.graphics.getHeight() - 30, 20, 20);
-        for (Dweller d : dwellers) {
+        for (Dweller d : vault.getDwellers()) {
             batch.draw(AssetManager.test, d.getX(), d.getY(), d.getWidth(), d.getHeight());
         }
-        for (Room r : rooms) {
+        for (Room r : vault.getRooms()) {
             //put room specific images here
             //Uncomment when different imnages are available
 //            if(r.getRoomName().equals("livingquaters")) {
@@ -213,23 +196,39 @@ public class WorldRenderer implements Screen {
      */
     public void CalculateLogic() {
         secondsPassed = (System.currentTimeMillis() - startTime) / 1000;
+        for (Room r : vault.getRooms()) {
+            if (r.getToCollect() <= secondsPassed) {
+                if (r.getRoomName().equals("diner")) {
+                    r.ChangeCanCollect();
+                } else if (r.getRoomName().equals("medbay")) {
+                    r.ChangeCanCollect();
+                } else if (r.getRoomName().equals("livingquaters")) {
+                    r.collectResource();
+                } else if (r.getRoomName().equals("powergenerator")) {
+                    r.ChangeCanCollect();
+                } else if (r.getRoomName().equals("sciencelab")) {
+                    r.ChangeCanCollect();
+                } else if (r.getRoomName().equals("waterpurification")) {
+                    r.ChangeCanCollect();
+                }
+            }
+        }
         if (Gdx.input.isKeyJustPressed(Keys.L)) {
             //Load();
         } else if (Gdx.input.isKeyJustPressed(Keys.R)) {
-            dwellers.add(new Dweller(20, 20, 20, 50));
-            System.out.println(dwellers.get(numDwellers));
-            numDwellers++;
+            vault.addDweller(new Dweller(20, 20, 20, 50));
+            System.out.println(vault.getDwellers().get(vault.getNumDwellers() - 1));
         } else if (Gdx.input.isKeyJustPressed(Keys.C)) {
 //            try {
 //                clearSave();
 //            } catch (IOException e) {
 //                e.printStackTrace();
 //            }
-            for (Room r : rooms) {
+            for (Room r : vault.getRooms()) {
                 System.out.println(r.getRoomName());
             }
         } else if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
-            for (Dweller d : dwellers) {
+            for (Dweller d : vault.getDwellers()) {
                 System.out.println(d);
             }
         } else if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
@@ -291,7 +290,7 @@ public class WorldRenderer implements Screen {
                         if (currentBuildState == DINER) {
                             if (getCost("diner")) {
                                 builtRoom = true;
-                                rooms.add(new Diner(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
+                                vault.addRoom(new Diner(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
                                 if (temp.getX() + 100 != Gdx.graphics.getWidth()) {
                                     buildSpaces.add(new Rectangle(temp.getX() + 100, temp.getY(), temp.getWidth(), temp.getHeight()));
                                 }
@@ -304,7 +303,7 @@ public class WorldRenderer implements Screen {
                         } else if (currentBuildState == POWERG) {
                             if (getCost("powergenerator")) {
                                 builtRoom = true;
-                                rooms.add(new PowerGenerator(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
+                                vault.addRoom(new PowerGenerator(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
                                 if (temp.getX() + 100 != Gdx.graphics.getWidth()) {
                                     buildSpaces.add(new Rectangle(temp.getX() + 100, temp.getY(), temp.getWidth(), temp.getHeight()));
                                 }
@@ -317,7 +316,7 @@ public class WorldRenderer implements Screen {
                         } else if (currentBuildState == WATERP) {
                             if (getCost("waterpurification")) {
                                 builtRoom = true;
-                                rooms.add(new WaterPurification(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
+                                vault.addRoom(new WaterPurification(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
                                 if (temp.getX() + 100 != Gdx.graphics.getWidth()) {
                                     buildSpaces.add(new Rectangle(temp.getX() + 100, temp.getY(), temp.getWidth(), temp.getHeight()));
                                 }
@@ -330,7 +329,7 @@ public class WorldRenderer implements Screen {
                         } else if (currentBuildState == LIVINGQ) {
                             if (getCost("livingquarters")) {
                                 builtRoom = true;
-                                rooms.add(new LivingQuarters(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
+                                vault.addRoom(new LivingQuarters(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
                                 if (temp.getX() + 100 != Gdx.graphics.getWidth()) {
                                     buildSpaces.add(new Rectangle(temp.getX() + 100, temp.getY(), temp.getWidth(), temp.getHeight()));
                                 }
@@ -343,7 +342,7 @@ public class WorldRenderer implements Screen {
                         } else if (currentBuildState == MEDBAY) {
                             if (getCost("medbay")) {
                                 builtRoom = true;
-                                rooms.add(new Medbay(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
+                                vault.addRoom(new Medbay(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
                                 if (temp.getX() + 100 != Gdx.graphics.getWidth()) {
                                     buildSpaces.add(new Rectangle(temp.getX() + 100, temp.getY(), temp.getWidth(), temp.getHeight()));
                                 }
@@ -356,7 +355,7 @@ public class WorldRenderer implements Screen {
                         } else if (currentBuildState == SCIENCEL) {
                             if (getCost("sciencelab")) {
                                 builtRoom = true;
-                                rooms.add(new ScienceLab(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
+                                vault.addRoom(new ScienceLab(temp.getX(), temp.getY(), temp.getWidth(), temp.getHeight()));
                                 if (temp.getX() + 100 != Gdx.graphics.getWidth()) {
                                     buildSpaces.add(new Rectangle(temp.getX() + 100, temp.getY(), temp.getWidth(), temp.getHeight()));
                                 }
@@ -376,7 +375,7 @@ public class WorldRenderer implements Screen {
                             }
                             //checks if any of the build spaces are in an area that already has a room
                             for (Rectangle r : buildSpaces) {
-                                for (Room d : rooms) {
+                                for (Room d : vault.getRooms()) {
                                     if (d.getRect().overlaps(r)) {
                                         buildSpaces.removeValue(r, true);
                                     }
@@ -390,15 +389,29 @@ public class WorldRenderer implements Screen {
                     currentFirstState = BUILD;
                     System.out.println(currentFirstState);
                 }
-                for (Dweller d : dwellers) {
+                for (Dweller d : vault.getDwellers()) {
                     if (rect.overlaps(d.getRect())) {
                         currentDwellerSelected = d;
                         currentRoomSelected = null;
                     }
                 }
-                for (Room r : rooms) {
-                    currentRoomSelected = r;
-                    currentDwellerSelected = null;
+                for (Room r : vault.getRooms()) {
+                    if (r.getCanCollect()) {
+                        if (r.getRoomName().equals("diner")) {
+                            vault.addFood(r.collectResource());
+                        } else if (r.getRoomName().equals("medbay")) {
+                            vault.addRadaway(r.collectResource());
+                        } else if (r.getRoomName().equals("powergenerator")) {
+                            vault.addEnergy(r.collectResource());
+                        } else if (r.getRoomName().equals("sciencelab")) {
+                            vault.addStimpak(r.collectResource());
+                        } else if (r.getRoomName().equals("waterpurification")) {
+                            vault.addWater(r.collectResource());
+                        }
+                    } else {
+                        currentRoomSelected = r;
+                        currentDwellerSelected = null;
+                    }
                 }
             }
 
@@ -422,7 +435,7 @@ public class WorldRenderer implements Screen {
         if (desiredBuild.equals("diner") || desiredBuild.equals("powergenerator")
                 || desiredBuild.equals("waterpurification") || desiredBuild.equals("livingquarters")) {
             int n = 0;
-            for (Room r : rooms) {
+            for (Room r : vault.getRooms()) {
                 if (r.getRoomName().equals(desiredBuild)) {
                     n++;
                 }
@@ -436,7 +449,7 @@ public class WorldRenderer implements Screen {
             }
         } else if (desiredBuild.equals("medbay") || desiredBuild.equals("sciencelab")) {
             int n = 0;
-            for (Room r : rooms) {
+            for (Room r : vault.getRooms()) {
                 if (r.getRoomName().equals(desiredBuild)) {
                     n++;
                 }
@@ -487,25 +500,9 @@ public class WorldRenderer implements Screen {
 
             // Create an ObjectInputStream to get objects from save file.
             ObjectInputStream save = new ObjectInputStream(saveFile);
-
-            energy = (Integer) save.readObject();
-            System.out.println(energy);
-            food = (Integer) save.readObject();
-            System.out.println(food);
-            water = (Integer) save.readObject();
-            System.out.println(water);
-            maxEnergy = (Integer) save.readObject();
-            System.out.println(maxEnergy);
-            maxFood = (Integer) save.readObject();
-            System.out.println(maxFood);
-            maxWater = (Integer) save.readObject();
-            System.out.println(maxWater);
             caps = (Integer) save.readObject();
-            System.out.println(caps);
-            maxDwellers = (Integer) save.readObject();
-            System.out.println(maxDwellers);
-            dwellers = (Array<Dweller>) save.readObject();
-            rooms = (Array<Room>) save.readObject();
+            vault = (Vault) save.readObject();
+            buildSpaces = (Array<Rectangle>) save.readObject();
             //Clost the save file
             save.close();
         } catch (Exception exc) {
@@ -524,16 +521,9 @@ public class WorldRenderer implements Screen {
             ObjectOutputStream save = new ObjectOutputStream(saveFile);
 
             // Now we do the save.
-            save.writeObject(energy);
-            save.writeObject(food);
-            save.writeObject(water);
-            save.writeObject(maxEnergy);
-            save.writeObject(maxFood);
-            save.writeObject(maxWater);
             save.writeObject(caps);
-            save.writeObject(maxDwellers);
-            save.writeObject(dwellers);
-            save.writeObject(rooms);
+            save.writeObject(vault);
+            save.writeObject(buildSpaces);
 
             // Close the file.
             save.close();

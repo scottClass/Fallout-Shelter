@@ -90,7 +90,7 @@ public class Dweller extends Entity {
      * 
      * @return returns the isChild boolean
      */
-    public boolean getAge() {
+    public boolean getIfChild() {
         return isChild;
     }
 
