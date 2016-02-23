@@ -410,6 +410,8 @@ public class WorldRenderer implements Screen {
                         }
                     } else {
                         currentRoomSelected = r;
+                        System.out.println(currentRoomSelected.getRoomName());
+                        System.out.println("Selected a room");
                         currentDwellerSelected = null;
                     }
                 }
