@@ -19,6 +19,9 @@ public class AssetManager {
     public static Texture cancelBuildIcon;
     public static Texture buildSpace;
     public static Texture capIcon;
+    public static Texture powerIcon;
+    public static Texture foodIcon;
+    public static Texture waterIcon;
     public static Texture livingQuarters;
     public static Texture diner;
     public static Texture powerGenerator;
@@ -33,5 +36,8 @@ public class AssetManager {
         cancelBuildIcon = new Texture("cancelBuild_icon.png");
         buildSpace = new Texture("buildSpace.png");
         capIcon = new Texture("CapIcon.png");
+        powerIcon = new Texture("power_icon.jpg");
+        foodIcon = new Texture("food_icon.jpg");
+        waterIcon = new Texture("water_icon.jpg");
     }
 }

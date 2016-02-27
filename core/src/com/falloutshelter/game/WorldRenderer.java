@@ -134,6 +134,18 @@ public class WorldRenderer implements Screen {
         for (Dweller d : vault.getDwellers()) {
             batch.draw(AssetManager.test, d.getX(), d.getY(), d.getWidth(), d.getHeight());
         }
+        //Displays if a room's resources can be collected
+        for(Room r : vault.getRooms()) {
+            if(r.getCanCollect()) {
+                if(r.getRoomName().equals("powergenerator")) {
+                    batch.draw(AssetManager.powerIcon, r.getX() + (r.getWidth() / 2), r.getY() + (r.getHeight() / 2), 15, 15);
+                } else if (r.getRoomName().equals("diner")) {
+                     batch.draw(AssetManager.foodIcon, r.getX() + (r.getWidth() / 2), r.getY() + (r.getHeight() / 2), 15, 15);
+                } else if (r.getRoomName().equals("waterpurification")) {
+                     batch.draw(AssetManager.waterIcon, r.getX() + (r.getWidth() / 2), r.getY() + (r.getHeight() / 2), 15, 15);
+                }
+            }
+        }
         for (Room r : vault.getRooms()) {
             //put room specific images here
             //Uncomment when different imnages are available
