@@ -414,6 +414,7 @@ public class WorldRenderer implements Screen {
                 }
                 boolean hasClicked = false;
                 for (Room r : vault.getRooms()) {
+                    //checks if player clicked a room that can collect a resource
                     if (rect.overlaps(r.getRect())) {
                         if (r.getCanCollect()) {
                             if (r.getRoomName().equals("diner")) {
