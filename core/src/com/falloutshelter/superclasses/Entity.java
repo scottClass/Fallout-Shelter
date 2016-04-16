@@ -6,7 +6,6 @@
 package com.falloutshelter.superclasses;
 
 import com.badlogic.gdx.math.Rectangle;
-import java.util.Random;
 
 /**
  *
