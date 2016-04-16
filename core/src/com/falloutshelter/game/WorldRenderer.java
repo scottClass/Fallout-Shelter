@@ -406,12 +406,7 @@ public class WorldRenderer implements Screen {
                     currentFirstState = BUILD;
                     System.out.println(currentFirstState);
                 }
-                for (Dweller d : vault.getDwellers()) {
-                    if (rect.overlaps(d.getRect())) {
-                        currentDwellerSelected = d;
-                        currentRoomSelected = null;
-                    }
-                }
+                
                 boolean hasClicked = false;
                 for (Room r : vault.getRooms()) {
                     //checks if player clicked a room that can collect a resource
@@ -434,6 +429,12 @@ public class WorldRenderer implements Screen {
                             currentDwellerSelected = null;
                         }
                         hasClicked = true;
+                    }
+                }
+                for (Dweller d : vault.getDwellers()) {
+                    if (rect.overlaps(d.getRect())) {
+                        currentDwellerSelected = d;
+                        currentRoomSelected = null;
                     }
                 }
                 if(!hasClicked) {
