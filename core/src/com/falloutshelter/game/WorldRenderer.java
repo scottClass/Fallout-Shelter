@@ -237,11 +237,11 @@ public class WorldRenderer implements Screen {
             vault.addDweller(new Dweller(20, 20, 20, 50));
             System.out.println(vault.getDwellers().get(vault.getNumDwellers() - 1));
         } else if (Gdx.input.isKeyJustPressed(Keys.C)) {
-//            try {
-//                clearSave();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
+            try {
+                clearSave();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             for (Room r : vault.getRooms()) {
                 System.out.println(r.getRoomName());
             }
@@ -447,7 +447,7 @@ public class WorldRenderer implements Screen {
 
         if (nextSave == secondsPassed) {
             //Save();
-            //System.out.println("Saved");
+            System.out.println("Saved");
             nextSave = secondsPassed + 10;
         }
     }
@@ -543,7 +543,6 @@ public class WorldRenderer implements Screen {
      */
     private void Save() {
         try {
-            // Open a file to write to, named SavedObj.sav.
             FileOutputStream saveFile = new FileOutputStream("SaveGame.txt");
             // Create an ObjectOutputStream to put objects into save file.
             ObjectOutputStream save = new ObjectOutputStream(saveFile);
