@@ -519,12 +519,12 @@ public class WorldRenderer implements Screen {
     }
 
     /**
-     * Loads data from SaveGame.sav
+     * Loads data from SaveGame.txt
      */
     private void Load() {
         try {
             // Open file to read from, named SavedObj.sav.
-            FileInputStream saveFile = new FileInputStream("SaveGame.sav");
+            FileInputStream saveFile = new FileInputStream("SaveGame.txt");
 
             // Create an ObjectInputStream to get objects from save file.
             ObjectInputStream save = new ObjectInputStream(saveFile);
@@ -539,12 +539,12 @@ public class WorldRenderer implements Screen {
     }
 
     /**
-     * Saves data to SaveGame.sav
+     * Saves data to SaveGame.txt
      */
     private void Save() {
         try {
             // Open a file to write to, named SavedObj.sav.
-            FileOutputStream saveFile = new FileOutputStream("SaveGame.sav");
+            FileOutputStream saveFile = new FileOutputStream("SaveGame.txt");
             // Create an ObjectOutputStream to put objects into save file.
             ObjectOutputStream save = new ObjectOutputStream(saveFile);
 
@@ -570,7 +570,7 @@ public class WorldRenderer implements Screen {
      * @throws IOException
      */
     private void clearSave() throws FileNotFoundException, IOException {
-        FileOutputStream saveFile = new FileOutputStream("SaveGame.sav");
+        FileOutputStream saveFile = new FileOutputStream("SaveGame.txt");
         saveFile.close();
         System.out.println("Cleared");
     }
